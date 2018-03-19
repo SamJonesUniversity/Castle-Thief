@@ -57,7 +57,15 @@ target_include_directories(lib_ecm INTERFACE "${CMAKE_SOURCE_DIR}/engine/lib_ecm
 target_link_libraries(lib_ecm PRIVATE lib_maths)
 
 #### Project goes here ####
-
+file(GLOB_RECURSE SOURCES Castle-Thief/*.cpp Castle-Thief/*.h)
+file(GLOB_RECURSE CMPNTS Castle-Thief/components/*.cpp CastleThief/components/*.h)
+file(GLOB_RECURSE SCENES Castle-Thief/scenes/*.cpp Castle-Thief/scenes/*.h)
+add_executable(Castle-Thief ${SOURCES} ${RESOURCE_FILES})
+source_group("components" FILES ${CMPNTS})
+source_group("resources" FILES ${RESOURCE_FILES})
+#target_include_directories(Castle-Thief SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
+target_link_libraries(Castle-Thief lib_engine)
+set(EXECUTABLES ${EXECUTABLES} Castle-Thief)
 #### Target for copying resources to build dir####
 if(APPLE)
   add_custom_target(copy_resources ALL
