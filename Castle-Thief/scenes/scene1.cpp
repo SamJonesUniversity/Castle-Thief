@@ -15,7 +15,7 @@ static shared_ptr<Entity> player;
 
 void Level1Scene::Load() {
   cout << " Scene 1 Load" << endl;
-  ls::loadLevelFile("res/level_2.txt", 40.0f);
+  ls::loadLevelFile("res/level_1.txt", 40.0f);
 
   auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
   ls::setOffset(Vector2f(0, ho));
@@ -34,7 +34,7 @@ void Level1Scene::Load() {
 
   // Create Enemy
   {
-	  auto enemy = makeEntity();
+	 /* auto enemy = makeEntity();
 	  enemy->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[0]) +
 		  Vector2f(0, 24));
 	  // *********************************
@@ -45,7 +45,7 @@ void Level1Scene::Load() {
 	  e->setShape<sf::CircleShape>(16.f, 0);
 	  e->getShape().setFillColor(Color::Red);
 	  e->getShape().setOrigin(16.f, 16.f);
-	  enemy->addComponent<EnemyAIComponent>();
+	  enemy->addComponent<EnemyAIComponent>();*/
 
 	  // Add EnemyAIComponent
 
