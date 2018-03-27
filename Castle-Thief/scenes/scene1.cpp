@@ -78,13 +78,12 @@ void Level1Scene::UnLoad() {
   Scene::UnLoad();
 }
 
-/*void Level1Scene::Update(const double& dt) {
+ void Level1Scene::Update(const double& dt) {
 
   if (ls::getTileAt(player->getPosition()) == ls::END) {
-    Engine::ChangeScene((Scene*)&level2);
   }
   Scene::Update(dt);
-}*/
+}
 
 void Level1Scene::Render() {
   ls::render(Engine::GetWindow());

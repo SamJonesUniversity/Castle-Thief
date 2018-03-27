@@ -3,7 +3,6 @@
 #include "scenes/scene_menu.h"
 
 using namespace std;
-
 MenuScene menu;
 Level1Scene level1;
 
