@@ -35,7 +35,9 @@ void Level1Scene::Load() {
 
   // Create Enemy
   {
-	  /*auto enemy = makeEntity();
+	for (int i = 0; i < 9; i++)
+	{
+	  auto enemy = make_shared<Entity>();
 	  enemy->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[0]) +
 		  Vector2f(0, 24));
 	  // *********************************
@@ -43,11 +45,13 @@ void Level1Scene::Load() {
 	  enemy->addComponent<HurtComponent>();
 	  // Add ShapeComponent, Red 16.f Circle
 	  auto e = enemy->addComponent<ShapeComponent>();
-	  e->setShape<sf::CircleShape>(16.f, 0);
+	  e->setShape<sf::CircleShape>(16.f);
 	  e->getShape().setFillColor(Color::Red);
 	  e->getShape().setOrigin(16.f, 16.f);
-	  enemy->addComponent<EnemyAIComponent>();*/
+	  enemy->addComponent<EnemyAIComponent>();
 
+	  ents.list.push_back(enemy);
+	}
 	  // Add EnemyAIComponent
 
 	  // *********************************
