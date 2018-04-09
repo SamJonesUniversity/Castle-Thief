@@ -61,6 +61,10 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
       temp_tiles.push_back((Tile)c);
     }
     ++widthCheck;
+	if (i == 590)
+	{
+		i = 590;
+	}
   }
 
   if (temp_tiles.size() != (w * h)) {
@@ -171,12 +175,13 @@ void LevelSystem::buildSprites(bool optimise) {
 }
 
 void LevelSystem::render(RenderWindow& window) {
-  /*for (auto& t : _sprites) {
+  for (auto& t : _sprites) {
     window.draw(*t);
-  }*/
-	for (size_t i = 0; i < 35; i++) {
-		window.draw(*_sprites[i]);
   }
+	/*for (size_t i = 0; i < 30; i++) {
+		window.draw(*_sprites[i]);
+		
+  }*/
 }
 LevelSystem::Tile LevelSystem::getTile(sf::Vector2ul p) {
   if (p.x > _width || p.y > _height) {
