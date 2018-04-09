@@ -37,7 +37,7 @@ void Level1Scene::Load() {
   {
 	for (int i = 0; i < 9; i++)
 	{
-	  auto enemy = make_shared<Entity>();
+	  auto enemy = makeEntity();
 	  enemy->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[0]) +
 		  Vector2f(0, 24));
 	  // *********************************
@@ -49,8 +49,6 @@ void Level1Scene::Load() {
 	  e->getShape().setFillColor(Color::Red);
 	  e->getShape().setOrigin(16.f, 16.f);
 	  enemy->addComponent<EnemyAIComponent>();
-
-	  ents.list.push_back(enemy);
 	}
 	  // Add EnemyAIComponent
 
