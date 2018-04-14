@@ -13,6 +13,6 @@ w           w         wwwwwwwwww
 wwwwwwwwwwwww                  w
 w                 ww           w
 w                w w           w
-w s            w w www         w
-wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+w             w w www          w
+w w                            w
 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
