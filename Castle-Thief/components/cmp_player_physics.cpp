@@ -42,11 +42,13 @@ void PlayerPhysicsComponent::update(double dt) {
       Keyboard::isKeyPressed(Keyboard::Right)) {
     // Moving Either Left or Right
     if (Keyboard::isKeyPressed(Keyboard::Right)) {
-      if (getVelocity().x < _maxVelocity.x)
+      if (getVelocity().x < _maxVelocity.x - 800)
         impulse({(float)(dt * _groundspeed), 0});
+	     _direction = false;
     } else {
-      if (getVelocity().x > -_maxVelocity.x)
+      if (getVelocity().x > -_maxVelocity.x + 800)
         impulse({-(float)(dt * _groundspeed), 0});
+	    _direction = true;
     }
   } else {
     // Dampen X axis movement
@@ -64,11 +66,18 @@ void PlayerPhysicsComponent::update(double dt) {
   }
 
   // Handle Dash
-  if (Keyboard::isKeyPressed(Keyboard::Right) & (Keyboard::isKeyPressed(Keyboard::C)))
+  if (_direction == false & (Keyboard::isKeyPressed(Keyboard::C)))
   {
-	  setVelocity(Vector2f(getVelocity().x, 0.f));
-	  teleport(Vector2f(pos.x + 0.5f, pos.y));
-	  impulse(Vector2f(6.f, 0));
+	  setVelocity(Vector2f(700.f, 0.f));
+	  move(Vector2f(pos.x + 200.f, pos.y));
+	  impulse(Vector2f(600.f, 0));
+  }
+  else if (_direction == true & (Keyboard::isKeyPressed(Keyboard::C)))
+  {
+	  setVelocity(Vector2f(-700.f, 0.f));
+	  move(Vector2f(pos.x - 200.f, pos.y));
+	  impulse(Vector2f(-600.f, 0));
+	  
   }
 
   //Are we in air?
@@ -94,8 +103,8 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
                                                const Vector2f& size)
     : PhysicsComponent(p, true, size) {
   _size = sv2_to_bv2(size, true);
-  _maxVelocity = Vector2f(200.f, 400.f);
-  _groundspeed = 30.f;
+  _maxVelocity = Vector2f(1000.f, 400.f);
+  _groundspeed = 40.f;
   _grounded = false;
   _body->SetSleepingAllowed(false);
   _body->SetFixedRotation(true);
