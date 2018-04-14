@@ -5,3 +5,4 @@
 
 extern MenuScene menu;
 extern Level1Scene level1;
+extern Level2Scene level2;
