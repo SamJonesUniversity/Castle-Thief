@@ -48,6 +48,7 @@ protected:
   bool _alive;       // should be updated
   bool _visible;     // should be rendered
   bool _fordeletion; // should be deleted
+  int _health; // entity health
   std::set<std::string> _tags;
 
 public:
@@ -82,6 +83,8 @@ public:
   bool isVisible() const;
 
   void setVisible(bool _visible);
+
+  int setHp();
 
   template <typename T, typename... Targs>
   std::shared_ptr<T> addComponent(Targs... params) {

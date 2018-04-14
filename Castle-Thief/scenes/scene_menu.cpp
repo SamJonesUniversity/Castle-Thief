@@ -12,7 +12,7 @@ void MenuScene::Load() {
   {
     auto txt = makeEntity();
     auto t = txt->addComponent<TextComponent>(
-        "Platformer\nPress Space to Start");
+        "Castle Thief\n1. Continue\n2. New game\n3. Options\n4. Exit");
   }
   setLoaded(true);
 }
@@ -20,8 +20,17 @@ void MenuScene::Load() {
 void MenuScene::Update(const double& dt) {
   // cout << "Menu Update "<<dt<<"\n";
 
-  if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
-    Engine::ChangeScene(&level1);
+  if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
+    
+  }	
+  else if (sf::Keyboard::isKeyPressed(Keyboard::Num2)) {
+	  Engine::ChangeScene(&level1);
+  }
+  else if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
+	  
+  }
+  else if (sf::Keyboard::isKeyPressed(Keyboard::Num4)) {
+	  exit(0);
   }
 
   Scene::Update(dt);

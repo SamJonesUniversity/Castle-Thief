@@ -48,7 +48,7 @@ void Level1Scene::Load() {
 	  e->setShape<sf::CircleShape>(16.f);
 	  e->getShape().setFillColor(Color::Red);
 	  e->getShape().setOrigin(16.f, 16.f);
-	  enemy->addComponent<EnemyAIComponent>();
+	  enemy->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
 	}
 	  // Add EnemyAIComponent
 
