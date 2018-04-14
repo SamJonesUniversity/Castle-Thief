@@ -63,6 +63,14 @@ void PlayerPhysicsComponent::update(double dt) {
     }
   }
 
+  // Handle Dash
+  if (Keyboard::isKeyPressed(Keyboard::Right) & (Keyboard::isKeyPressed(Keyboard::C)))
+  {
+	  setVelocity(Vector2f(getVelocity().x, 0.f));
+	  teleport(Vector2f(pos.x + 0.5f, pos.y));
+	  impulse(Vector2f(6.f, 0));
+  }
+
   //Are we in air?
   if (!_grounded) {
     // Check to see if we have landed yet
