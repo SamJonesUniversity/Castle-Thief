@@ -3,6 +3,7 @@
 #include "../components/cmp_hurt_player.h"
 #include "../components/cmp_physics.h"
 #include "../components/cmp_player_physics.h"
+#include "../components/cmp_steering.h"
 #include "../Castle-Thief.h"
 #include <LevelSystem.h>
 #include <iostream>
@@ -35,7 +36,7 @@ void Level1Scene::Load() {
 
   // Create Enemy
   {
-	for (int i = 0; i < 9; i++)
+	for (size_t i = 0; i < 9; i++)
 	{
 	  auto enemy = makeEntity();
 	  enemy->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[0]) +
@@ -48,7 +49,8 @@ void Level1Scene::Load() {
 	  e->setShape<sf::CircleShape>(16.f);
 	  e->getShape().setFillColor(Color::Red);
 	  e->getShape().setOrigin(16.f, 16.f);
-	  enemy->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
+	  enemy->addComponent<SteeringComponent>(player.get());
+	  //enemy->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
 	}
 	  // Add EnemyAIComponent
 
