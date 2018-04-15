@@ -3,6 +3,7 @@
 #include "../Castle-Thief.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
+#include <SFML/Audio.hpp>
 
 using namespace std;
 using namespace sf;
@@ -10,6 +11,11 @@ using namespace sf;
 void MenuScene::Load() {
   cout << "Menu Load \n";
   {
+	  sf::Music music;
+	  music.openFromFile("res/music/BloodyTears.ogg");
+	  music.setVolume(50);
+	  music.play();
+		
     auto txt = makeEntity();
     auto t = txt->addComponent<TextComponent>(
         "Castle Thief\n1. Continue\n2. New game\n3. Options\n4. Exit");

@@ -80,7 +80,7 @@ void PlayerPhysicsComponent::update(double dt) {
   _firetime -= dt;
   if (_firetime <= 0.f) {
 	  fire();
-	  _firetime = 3.f;
+	  _firetime = 2.f;
   }
 
   //Teleport to start if we fall off map.
