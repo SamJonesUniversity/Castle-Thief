@@ -51,12 +51,12 @@ void Level1Scene::Load() {
 	  // Add HurtComponent
 	  //enemy1->addComponent<HurtComponent>();
 	  // Add ShapeComponent, Red 16.f Circle
-	 // auto e = enemy1->addComponent<ShapeComponent>();
-	  //e->setShape<sf::CircleShape>(16.f);
-	  //e->getShape().setFillColor(Color::Red);
-	  //e->getShape().setOrigin(16.f, 16.f);
-	  //enemy1->addComponent<SteeringComponent>(player.get());
-	 // ai = enemy1->addComponent<PathfindingComponent>();
+	  auto e = enemy1->addComponent<ShapeComponent>();
+	  e->setShape<sf::CircleShape>(16.f);
+	  e->getShape().setFillColor(Color::Red);
+	  e->getShape().setOrigin(16.f, 16.f);
+	  enemy1->addComponent<SteeringComponent>(player.get());
+	  //ai = enemy1->addComponent<PathfindingComponent>();
 	  //enemy->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
 	//}
 	  // Add EnemyAIComponent
@@ -94,19 +94,18 @@ void Level1Scene::UnLoad() {
 	 Scene::Update(dt);
 	 const auto pp = player->getPosition();
   if (ls::getTileAt(player->getPosition()) == ls::END) {
-	  Engine::ChangeScene((Scene*)&level2);
+	 Engine::ChangeScene((Scene*)&level2);
   }
   else if (!player->isAlive()) {
-	  Engine::ChangeScene((Scene*)&level1);
+	 Engine::ChangeScene((Scene*)&level1);
   }
-  /*
-  auto enemy_pos = enemy1->getPosition() - ls::getOffset();
+  /*auto enemy_pos = enemy1->getPosition() - ls::getOffset();
   auto enemy_tile = Vector2i(enemy_pos / ls::getTileSize());
   auto player_pos = player->getPosition() - ls::getOffset();
   auto player_tile = Vector2i(player_pos / ls::getTileSize());
   auto path = pathFind(enemy_tile, player_tile);
-  ai->setPath(path);
-  */
+  ai->setPath(path);*/
+
   Scene::Update(dt);
 }
 

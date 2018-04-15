@@ -35,46 +35,30 @@ bool PlayerPhysicsComponent::isGrounded() const {
 
 void PlayerPhysicsComponent::fire() const {
 	if (Keyboard::isKeyPressed(Keyboard::X))
-	{
-		auto arrow = _parent->scene->makeEntity();
+	{	
+		int direction = 1;
+		if (_direction)
+		{
+			direction = -1;
+		}
+
 		Vector2f spawnArrow = _parent->getPosition();
+		spawnArrow.x += 40.0f*direction;
+
+		auto arrow = _parent->scene->makeEntity();
+		arrow->setPosition(spawnArrow);
 		//  arrow->addComponent<HurtComponent>();
 		arrow->addComponent<ArrowComponent>();
 
 		auto s = arrow->addComponent<ShapeComponent>();
+		s->getShape().setOrigin(50.f*direction, 8.f);;
 		s->setShape<sf::RectangleShape>(Vector2f(10.f, 2.f));
 		s->getShape().setFillColor(Color::Blue);
 
-		auto p = arrow->addComponent<PhysicsComponent>(true, Vector2f(10.f, 2.f));
+		auto p = arrow->addComponent<PhysicsComponent>(true, Vector2f(10.f*direction, 2.f));
+		p->impulse(sf::rotate(Vector2f(20.f*direction, 0), -_parent->getRotation()));
 		p->setRestitution(.4f);
 		p->setFriction(.005f);
-		
-		if (Keyboard::isKeyPressed(Keyboard::X))
-		{
-			int direction = 1;
-			if (_direction)
-			{
-				direction = -1;
-			}
-
-			Vector2f spawnArrow = _parent->getPosition();
-			spawnArrow.x += 40.0f*direction;
-
-			auto arrow = _parent->scene->makeEntity();
-			arrow->setPosition(spawnArrow);
-			 arrow->addComponent<HurtComponent>();
-			arrow->addComponent<ArrowComponent>();
-
-			auto s = arrow->addComponent<ShapeComponent>();
-			s->getShape().setOrigin(50.f*direction, 8.f);;
-			s->setShape<sf::RectangleShape>(Vector2f(10.f, 2.f));
-			s->getShape().setFillColor(Color::Blue);
-
-			auto p = arrow->addComponent<PhysicsComponent>(true, Vector2f(10.f*direction, 2.f));
-			p->impulse(sf::rotate(Vector2f(20.f*direction, 0), -_parent->getRotation()));
-			p->setRestitution(.4f);
-			p->setFriction(.005f);
-		}
 	}
 }
 
