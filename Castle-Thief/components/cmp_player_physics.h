@@ -1,5 +1,5 @@
 #pragma once
-
+#include <ecm.h>
 #include "cmp_physics.h"
 
 class PlayerPhysicsComponent : public PhysicsComponent {
@@ -9,7 +9,9 @@ protected:
   bool _grounded;
   float _groundspeed;
   bool _direction;
+  float _firetime;
 
+  void fire() const;
   bool isGrounded() const;
 
 public:

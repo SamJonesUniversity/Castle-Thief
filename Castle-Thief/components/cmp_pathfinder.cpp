@@ -8,7 +8,7 @@ using namespace std;
 
 void PathfindingComponent::update(double dt) {
 	_elapsed += dt;
-	if (_elapsed >= 0.1) {
+	if (_elapsed >= 0.8) {
 		_elapsed = 0.0;
 		if (_index < _path.size()) {
 			//Could do this in a single line
