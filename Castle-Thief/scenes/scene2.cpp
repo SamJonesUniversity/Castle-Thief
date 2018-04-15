@@ -23,6 +23,7 @@ void Level2Scene::Load() {
 	// Create player
 	{
 		player = makeEntity();
+		player->setHp(3);
 		player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
 		auto s = player->addComponent<ShapeComponent>();
 		s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));

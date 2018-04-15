@@ -6,10 +6,14 @@
 #include <LevelSystem.h>
 #include "cmp_hurt_player.h"
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Audio.hpp>
 
 using namespace std;
 using namespace sf;
 using namespace Physics;
+
+sf::SoundBuffer buffer;
+sf::Sound sound;
 
 bool PlayerPhysicsComponent::isGrounded() const {
   auto touch = getTouching();
@@ -47,7 +51,7 @@ void PlayerPhysicsComponent::fire() const {
 
 		auto arrow = _parent->scene->makeEntity();
 		arrow->setPosition(spawnArrow);
-		//  arrow->addComponent<HurtComponent>();
+		arrow->addComponent<HurtComponent>();
 		arrow->addComponent<ArrowComponent>();
 
 		auto s = arrow->addComponent<ShapeComponent>();
@@ -98,6 +102,12 @@ void PlayerPhysicsComponent::update(double dt) {
   if (Keyboard::isKeyPressed(Keyboard::Z)) {
     _grounded = isGrounded();
     if (_grounded) {
+		if (!buffer.loadFromFile("res/sounds/ahem.wav")) {
+			std::cout << "AH BUGGER" << std::endl;
+		}
+		sound.setBuffer(buffer);
+		sound.play();
+
       setVelocity(Vector2f(getVelocity().x, 0.f));
       teleport(Vector2f(pos.x, pos.y - 2.0f));
       impulse(Vector2f(0, -6.f));
