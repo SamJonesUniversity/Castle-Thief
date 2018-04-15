@@ -6,9 +6,15 @@ using namespace sf;
 
 void HurtComponent::update(double dt) {
   if (auto pl = _player.lock()) {
+	  int damage = pl->getHp();
     if (length(pl->getPosition() - _parent->getPosition()) < 25.0) {
-      pl->setForDelete();
-      _parent->setForDelete();
+		pl->setHp(damage-1);
+		if (damage == 0)
+		{
+			pl->setForDelete();
+			_parent->setForDelete();
+		}
+      
     }
   }
 }

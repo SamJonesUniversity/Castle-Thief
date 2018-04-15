@@ -5,6 +5,7 @@
 #include "../components/cmp_player_physics.h"
 #include "../components/cmp_steering.h"
 #include "../components/cmp_pathfinder.h"
+#include "engine.h"
 #include "../components/astar.h"
 #include "../Castle-Thief.h"
 #include <LevelSystem.h>
@@ -28,6 +29,7 @@ void Level1Scene::Load() {
   // Create player
   {
     player = makeEntity();
+	player->setHp(3);
     player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
     auto s = player->addComponent<ShapeComponent>();
     s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
@@ -37,7 +39,7 @@ void Level1Scene::Load() {
 	player->addTag("player");
     player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
   }
-
+  
   // Create Enemy
   {
 	//for (size_t i = 0; i < 9; i++)
@@ -49,19 +51,19 @@ void Level1Scene::Load() {
 	  // Add HurtComponent
 	  //enemy1->addComponent<HurtComponent>();
 	  // Add ShapeComponent, Red 16.f Circle
-	  auto e = enemy1->addComponent<ShapeComponent>();
-	  e->setShape<sf::CircleShape>(16.f);
-	  e->getShape().setFillColor(Color::Red);
-	  e->getShape().setOrigin(16.f, 16.f);
+	 // auto e = enemy1->addComponent<ShapeComponent>();
+	  //e->setShape<sf::CircleShape>(16.f);
+	  //e->getShape().setFillColor(Color::Red);
+	  //e->getShape().setOrigin(16.f, 16.f);
 	  //enemy1->addComponent<SteeringComponent>(player.get());
-	  ai = enemy1->addComponent<PathfindingComponent>();
+	 // ai = enemy1->addComponent<PathfindingComponent>();
 	  //enemy->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
 	//}
 	  // Add EnemyAIComponent
 
 	  // *********************************
   }
-
+  
   // Add physics colliders to level tiles.
   {
     auto walls = ls::findTiles(ls::WALL);
@@ -97,13 +99,14 @@ void Level1Scene::UnLoad() {
   else if (!player->isAlive()) {
 	  Engine::ChangeScene((Scene*)&level1);
   }
+  /*
   auto enemy_pos = enemy1->getPosition() - ls::getOffset();
   auto enemy_tile = Vector2i(enemy_pos / ls::getTileSize());
   auto player_pos = player->getPosition() - ls::getOffset();
   auto player_tile = Vector2i(player_pos / ls::getTileSize());
   auto path = pathFind(enemy_tile, player_tile);
   ai->setPath(path);
-
+  */
   Scene::Update(dt);
 }
 

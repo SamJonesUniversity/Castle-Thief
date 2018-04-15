@@ -1,9 +1,10 @@
 #include "cmp_player_physics.h"
-#include "system_physics.h"
+#include <system_physics.h>
 #include "cmp_arrow.h"
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <engine.h>
 #include <LevelSystem.h>
+#include "cmp_hurt_player.h"
 #include <SFML/Window/Keyboard.hpp>
 
 using namespace std;
@@ -48,22 +49,31 @@ void PlayerPhysicsComponent::fire() const {
 		p->setRestitution(.4f);
 		p->setFriction(.005f);
 		
-		if (_direction == false)
+		if (Keyboard::isKeyPressed(Keyboard::X))
 		{
-		
-			spawnArrow.x += 40.0f;
+			int direction = 1;
+			if (_direction)
+			{
+				direction = -1;
+			}
+
+			Vector2f spawnArrow = _parent->getPosition();
+			spawnArrow.x += 40.0f*direction;
+
+			auto arrow = _parent->scene->makeEntity();
 			arrow->setPosition(spawnArrow);
-			s->getShape().setOrigin(-50.f, 8.f);;
-			p->impulse(sf::rotate(Vector2f(20.f, 0), -_parent->getRotation()));
-			
-			
-		}
-		else if (_direction == true)
-		{
-			spawnArrow.x -= 40.0f;
-			arrow->setPosition(spawnArrow);
-		s->getShape().setOrigin(50.f, 8.f);
-		p->impulse(sf::rotate(Vector2f(-60.f, 0), -_parent->getRotation()));
+			 arrow->addComponent<HurtComponent>();
+			arrow->addComponent<ArrowComponent>();
+
+			auto s = arrow->addComponent<ShapeComponent>();
+			s->getShape().setOrigin(50.f*direction, 8.f);;
+			s->setShape<sf::RectangleShape>(Vector2f(10.f, 2.f));
+			s->getShape().setFillColor(Color::Blue);
+
+			auto p = arrow->addComponent<PhysicsComponent>(true, Vector2f(10.f*direction, 2.f));
+			p->impulse(sf::rotate(Vector2f(20.f*direction, 0), -_parent->getRotation()));
+			p->setRestitution(.4f);
+			p->setFriction(.005f);
 		}
 	}
 }
@@ -75,7 +85,7 @@ void PlayerPhysicsComponent::update(double dt) {
   _firetime -= dt;
   if (_firetime <= 0.f) {
 	  fire();
-	  _firetime = 1.f;
+	  _firetime = 3.f;
   }
 
   //Teleport to start if we fall off map.

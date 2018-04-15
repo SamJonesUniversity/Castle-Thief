@@ -63,6 +63,10 @@ public:
 
   virtual void render();
 
+  int getHp() const;
+
+  int setHp();
+
   //
   const sf::Vector2f& getPosition() const;
 
@@ -84,7 +88,8 @@ public:
 
   void setVisible(bool _visible);
 
-  int setHp();
+  int setHp(int _health);
+  int getHp(int _health);
 
   template <typename T, typename... Targs>
   std::shared_ptr<T> addComponent(Targs... params) {
