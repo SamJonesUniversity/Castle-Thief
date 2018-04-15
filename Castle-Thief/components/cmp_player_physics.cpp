@@ -1,7 +1,7 @@
 #include "cmp_player_physics.h"
 #include "system_physics.h"
 #include "cmp_arrow.h"
-#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <engine.h>
 #include <LevelSystem.h>
 #include <SFML/Window/Keyboard.hpp>
@@ -41,25 +41,24 @@ void PlayerPhysicsComponent::fire() const {
 		arrow->addComponent<ArrowComponent>();
 		auto s = arrow->addComponent<ShapeComponent>();
 
-		s->setShape<sf::CircleShape>(2.f);
-		s->getShape().setFillColor(Color::Red);
+		s->setShape<sf::RectangleShape>(Vector2f(5.f, 2.f));
+		s->getShape().setFillColor(Color::Blue);
 		auto p = arrow->addComponent<PhysicsComponent>(true, Vector2f(2.f, 2.f));
 		
 		if (_direction == false)
 		{
 			s->getShape().setOrigin(-50.f, 8.f);
-		//	p->setRestitution(.4f);
+			p->setRestitution(.4f);
 			p->setFriction(.005f);
-		//	p->impulse(sf::rotate(Vector2f(20.f, 0), -_parent->getRotation()));
+			p->impulse(sf::rotate(Vector2f(20.f, 0), -_parent->getRotation()));
 			
 		}
 		else if (_direction == true)
 		{
 			s->getShape().setOrigin(50.f, 8.f);
-			
-			//p->setRestitution(.04f);
-			p->setFriction(.005f);
-		//	p->impulse(sf::rotate(Vector2f(-20.f, 0), -_parent->getRotation()));
+		p->setRestitution(.04f);
+		p->setFriction(.005f);
+		p->impulse(sf::rotate(Vector2f(-20.f, 0), -_parent->getRotation()));
 		}
 	}
 }
