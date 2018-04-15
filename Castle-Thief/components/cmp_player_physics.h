@@ -10,7 +10,8 @@ protected:
   float _groundspeed;
   bool _direction;
   float _firetime;
-
+  float _elapsed;
+  void dash() const;
   void fire() const;
   bool isGrounded() const;
 

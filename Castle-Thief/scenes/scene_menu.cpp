@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <ShlObj_core.h>
+#include <SFML/Audio.hpp>
 
 using namespace std;
 using namespace sf;
@@ -12,6 +13,11 @@ using namespace sf;
 void MenuScene::Load() {
   cout << "Menu Load \n";
   {
+	  sf::Music music;
+	  music.openFromFile("res/music/BloodyTears.ogg");
+	  music.setVolume(50);
+	  music.play();
+		
     auto txt = makeEntity();
     auto t = txt->addComponent<TextComponent>(
         "Castle Thief\n1. Continue\n2. New game\n3. Options\n4. Exit");
