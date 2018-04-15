@@ -49,6 +49,11 @@ void PlayerPhysicsComponent::update(double dt) {
 	  //dash();
 	  _candash = true; 
   }
+  if (_elapsed <= 1.7f && _dampener)
+  {
+	  setVelocity(Vector2f(0.f, 0.f));
+	  _dampener = false;
+  }
 
   // Handle Dash
   if (_candash && Keyboard::isKeyPressed(Keyboard::C))
@@ -73,6 +78,7 @@ void PlayerPhysicsComponent::update(double dt) {
 
 	_elapsed = 2.f;
 	_candash = false;
+	_dampener = true;
   }
 
   if (_firetime <= 0.f) {

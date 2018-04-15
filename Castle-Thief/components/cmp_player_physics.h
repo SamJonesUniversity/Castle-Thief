@@ -13,8 +13,7 @@ protected:
   bool _canfire;
   float _firetime;
   float _elapsed;
-  //void dash(const sf::Vector2f& v, Vector2f, const sf::Vector2f& i) const;
-  void fire() const;
+  bool _dampener;
   bool isGrounded() const;
 
 public:
