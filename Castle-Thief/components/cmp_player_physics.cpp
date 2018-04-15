@@ -37,55 +37,84 @@ bool PlayerPhysicsComponent::isGrounded() const {
 
   return false;
 }
-//handles arrow code
-void PlayerPhysicsComponent::fire() const {
-	if (Keyboard::isKeyPressed(Keyboard::X)) //if x is pressed fire an arrow
-	{	
-		int direction = 1;
-		if (_direction)
-		{
-			direction = -1;
-		}
-
-		if (!buffer.loadFromFile("res/sounds/shoot.wav")) {
-			std::cout << "Could not laod file" << std::endl;
-		}
-		sound.setBuffer(buffer);
-		sound.play();
-
-
-		Vector2f spawnArrow = _parent->getPosition();
-		spawnArrow.x += 40.0f*direction;
-
-		auto arrow = _parent->scene->makeEntity();
-		arrow->setPosition(spawnArrow);
-		arrow->addComponent<HurtComponent>();
-		arrow->addComponent<ArrowComponent>();
-
-		auto s = arrow->addComponent<ShapeComponent>();
-		s->getShape().setOrigin(50.f*direction, 8.f);;
-		s->setShape<sf::RectangleShape>(Vector2f(10.f, 2.f));
-		s->getShape().setFillColor(Color::Blue);
-
-		auto p = arrow->addComponent<PhysicsComponent>(true, Vector2f(10.f*direction, 2.f));
-		p->impulse(sf::rotate(Vector2f(20.f*direction, 0), -_parent->getRotation()));
-		p->setRestitution(.4f);
-		p->setFriction(.005f);
-	}
-}
 
 void PlayerPhysicsComponent::update(double dt) {
 
   const auto pos = _parent->getPosition();
+
   _elapsed -= dt;
-  if (_elapsed <= 0.f) {
-	  dash();
-	  _elapsed = 5.f;
-  }
   _firetime -= dt;
+
+  if (_elapsed <= 0.f) {
+	  //dash();
+	  _candash = true; 
+  }
+
+  // Handle Dash
+  if (_candash && Keyboard::isKeyPressed(Keyboard::C))
+  {
+	if (!buffer.loadFromFile("res/sounds/dash.wav")) {
+		std::cout << "File could not load" << std::endl;
+	}
+	sound.setBuffer(buffer);
+	sound.play();
+	if (_direction == false) //If player is facing right then dash right
+	{
+		setVelocity(Vector2f(700.f, 0.f));
+		move(Vector2f(pos.x + 200.f, pos.y));
+		impulse(Vector2f(600.f, 0));
+	}
+	else if (_direction == true) //If player is facing left  then dash left
+	{
+		setVelocity(Vector2f(-700.f, 0.f));
+		move(Vector2f(pos.x - 200.f, pos.y));
+		impulse(Vector2f(-600.f, 0));
+	}
+
+	_elapsed = 2.f;
+	_candash = false;
+  }
+
   if (_firetime <= 0.f) {
-	  fire();
+	  _canfire = true;
+  }
+
+  //handles arrow code
+  if (_canfire && Keyboard::isKeyPressed(Keyboard::X))
+  {
+	  int direction = 1;
+	  if (_direction)
+	  {
+		  direction = -1;
+	  }
+
+	  if (!buffer.loadFromFile("res/sounds/shoot.wav")) {
+		  std::cout << "Could not laod file" << std::endl;
+	  }
+	  sound.setBuffer(buffer);
+	  sound.play();
+
+
+	  Vector2f spawnArrow = _parent->getPosition();
+	  spawnArrow.x += 40.0f*direction;
+
+	  auto arrow = _parent->scene->makeEntity();
+	  arrow->setPosition(spawnArrow);
+	  arrow->addComponent<HurtComponent>();
+	  arrow->addComponent<ArrowComponent>();
+
+	  auto s = arrow->addComponent<ShapeComponent>();
+	  s->getShape().setOrigin(50.f*direction, 8.f);;
+	  s->setShape<sf::RectangleShape>(Vector2f(10.f, 2.f));
+	  s->getShape().setFillColor(Color::Blue);
+
+	  auto p = arrow->addComponent<PhysicsComponent>(true, Vector2f(10.f*direction, 2.f));
+	  p->impulse(sf::rotate(Vector2f(20.f*direction, 0), -_parent->getRotation()));
+	  p->setRestitution(.4f);
+	  p->setFriction(.005f);
+
 	  _firetime = 2.f;
+	  _canfire = false;
   }
 
   //Teleport to start if we fall off map.
@@ -124,33 +153,7 @@ void PlayerPhysicsComponent::update(double dt) {
       teleport(Vector2f(pos.x, pos.y - 2.0f));
       impulse(Vector2f(0, -6.f));
     }
-  }
-
-
-
-  // Handle Dash
-  
-  if (Keyboard::isKeyPressed(Keyboard::C)) 
-  {
-	  if (!buffer.loadFromFile("res/sounds/dash.wav")) {
-		  std::cout << "File could not load" << std::endl;
-	  }
-	  sound.setBuffer(buffer);
-	  sound.play();
-	  if (_direction == false) //If player is facing right then dash right
-	  {
-		  setVelocity(Vector2f(700.f, 0.f));
-		  move(Vector2f(pos.x + 200.f, pos.y));
-		  impulse(Vector2f(600.f, 0));
-	  }
-
-	  else if (_direction == true) //If player is facing left  then dash left
-	  {
-		  setVelocity(Vector2f(-700.f, 0.f));
-		  move(Vector2f(pos.x - 200.f, pos.y));
-		  impulse(Vector2f(-600.f, 0));
-	  }
-  }
+  } 
 
   //Are we in air?
   if (!_grounded) {

@@ -9,9 +9,11 @@ protected:
   bool _grounded;
   float _groundspeed;
   bool _direction;
+  bool _candash;
+  bool _canfire;
   float _firetime;
   float _elapsed;
-  void dash() const;
+  //void dash(const sf::Vector2f& v, Vector2f, const sf::Vector2f& i) const;
   void fire() const;
   bool isGrounded() const;
 
