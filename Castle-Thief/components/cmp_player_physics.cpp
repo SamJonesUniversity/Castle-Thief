@@ -36,29 +36,34 @@ void PlayerPhysicsComponent::fire() const {
 	if (Keyboard::isKeyPressed(Keyboard::X))
 	{
 		auto arrow = _parent->scene->makeEntity();
-		arrow->setPosition(_parent->getPosition());
+		Vector2f spawnArrow = _parent->getPosition();
 		//  arrow->addComponent<HurtComponent>();
 		arrow->addComponent<ArrowComponent>();
-		auto s = arrow->addComponent<ShapeComponent>();
 
-		s->setShape<sf::RectangleShape>(Vector2f(5.f, 2.f));
+		auto s = arrow->addComponent<ShapeComponent>();
+		s->setShape<sf::RectangleShape>(Vector2f(10.f, 2.f));
 		s->getShape().setFillColor(Color::Blue);
-		auto p = arrow->addComponent<PhysicsComponent>(true, Vector2f(2.f, 2.f));
+
+		auto p = arrow->addComponent<PhysicsComponent>(true, Vector2f(10.f, 2.f));
+		p->setRestitution(.4f);
+		p->setFriction(.005f);
 		
 		if (_direction == false)
 		{
-			s->getShape().setOrigin(-50.f, 8.f);
-			p->setRestitution(.4f);
-			p->setFriction(.005f);
+		
+			spawnArrow.x += 40.0f;
+			arrow->setPosition(spawnArrow);
+			s->getShape().setOrigin(-50.f, 8.f);;
 			p->impulse(sf::rotate(Vector2f(20.f, 0), -_parent->getRotation()));
+			
 			
 		}
 		else if (_direction == true)
 		{
-			s->getShape().setOrigin(50.f, 8.f);
-		p->setRestitution(.04f);
-		p->setFriction(.005f);
-		p->impulse(sf::rotate(Vector2f(-20.f, 0), -_parent->getRotation()));
+			spawnArrow.x -= 40.0f;
+			arrow->setPosition(spawnArrow);
+		s->getShape().setOrigin(50.f, 8.f);
+		p->impulse(sf::rotate(Vector2f(-60.f, 0), -_parent->getRotation()));
 		}
 	}
 }
