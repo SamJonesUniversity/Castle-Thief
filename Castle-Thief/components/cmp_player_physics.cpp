@@ -13,7 +13,8 @@ using namespace sf;
 using namespace Physics;
 
 sf::SoundBuffer buffer;
-sf::Sound sound;
+sf::Sound sound; 
+double _elapsed = 0;
 
 bool PlayerPhysicsComponent::isGrounded() const {
   auto touch = getTouching();
@@ -36,9 +37,9 @@ bool PlayerPhysicsComponent::isGrounded() const {
 
   return false;
 }
-
+//handles arrow code
 void PlayerPhysicsComponent::fire() const {
-	if (Keyboard::isKeyPressed(Keyboard::X))
+	if (Keyboard::isKeyPressed(Keyboard::X)) //if x is pressed fire an arrow
 	{	
 		int direction = 1;
 		if (_direction)
@@ -47,7 +48,7 @@ void PlayerPhysicsComponent::fire() const {
 		}
 
 		if (!buffer.loadFromFile("res/sounds/shoot.wav")) {
-			std::cout << "AH BUGGER" << std::endl;
+			std::cout << "Could not laod file" << std::endl;
 		}
 		sound.setBuffer(buffer);
 		sound.play();
@@ -76,7 +77,11 @@ void PlayerPhysicsComponent::fire() const {
 void PlayerPhysicsComponent::update(double dt) {
 
   const auto pos = _parent->getPosition();
-
+  _elapsed -= dt;
+  if (_elapsed <= 0.f) {
+	  dash();
+	  _elapsed = 5.f;
+  }
   _firetime -= dt;
   if (_firetime <= 0.f) {
 	  fire();
@@ -110,7 +115,7 @@ void PlayerPhysicsComponent::update(double dt) {
     _grounded = isGrounded();
     if (_grounded) {
 		if (!buffer.loadFromFile("res/sounds/jump.wav")) {
-			std::cout << "AH BUGGER" << std::endl;
+			std::cout << "File Could not load" << std::endl;
 		}
 		sound.setBuffer(buffer);
 		sound.play();
@@ -124,26 +129,26 @@ void PlayerPhysicsComponent::update(double dt) {
 
 
   // Handle Dash
-  if (Keyboard::isKeyPressed(Keyboard::C)) //If player is facing right and c is pressed then dash right
+  
+  if (Keyboard::isKeyPressed(Keyboard::C)) 
   {
 	  if (!buffer.loadFromFile("res/sounds/dash.wav")) {
-		  std::cout << "AH BUGGER" << std::endl;
+		  std::cout << "File could not load" << std::endl;
 	  }
 	  sound.setBuffer(buffer);
 	  sound.play();
-	  if (_direction == false)
+	  if (_direction == false) //If player is facing right then dash right
 	  {
 		  setVelocity(Vector2f(700.f, 0.f));
 		  move(Vector2f(pos.x + 200.f, pos.y));
 		  impulse(Vector2f(600.f, 0));
 	  }
 
-	  else if (_direction == true) //If player is facing left and c is pressed then dash left
+	  else if (_direction == true) //If player is facing left  then dash left
 	  {
 		  setVelocity(Vector2f(-700.f, 0.f));
 		  move(Vector2f(pos.x - 200.f, pos.y));
 		  impulse(Vector2f(-600.f, 0));
-
 	  }
   }
 
