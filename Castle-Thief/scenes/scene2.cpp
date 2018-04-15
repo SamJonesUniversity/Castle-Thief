@@ -6,7 +6,9 @@
 #include "../Castle-Thief.h"
 #include <LevelSystem.h>
 #include <iostream>
+#include <fstream>
 #include <thread>
+#include <ShlObj_core.h>
 
 using namespace std;
 using namespace sf;
@@ -19,6 +21,18 @@ void Level2Scene::Load() {
 
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
 	ls::setOffset(Vector2f(0, ho));
+
+	CHAR my_documents[MAX_PATH];
+	HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
+
+	string paths = strcat(my_documents, "\\Castle-Thief\\savefile.txt");
+
+	ofstream myfile(paths);
+	if (myfile.is_open())
+	{
+		myfile << "2\n";
+		myfile.close();
+	}
 
 	// Create player
 	{

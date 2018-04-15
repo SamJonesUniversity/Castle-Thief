@@ -10,7 +10,9 @@
 #include "../Castle-Thief.h"
 #include <LevelSystem.h>
 #include <iostream>
+#include <fstream>
 #include <thread>
+#include <ShlObj_core.h>
 
 using namespace std;
 using namespace sf;
@@ -20,11 +22,23 @@ static shared_ptr<Entity> enemy1;
 shared_ptr<PathfindingComponent> ai;
 
 void Level1Scene::Load() {
-  cout << " Scene 1 Load" << endl;
-  ls::loadLevelFile("res/level_1.txt", 40.0f);
+	cout << " Scene 1 Load" << endl;
+	ls::loadLevelFile("res/level_1.txt", 40.0f);
 
-  auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
-  ls::setOffset(Vector2f(0, ho));
+	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
+	ls::setOffset(Vector2f(0, ho));
+
+	CHAR my_documents[MAX_PATH];
+	HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
+
+	string paths = strcat(my_documents, "\\Castle-Thief\\savefile.txt");
+
+	ofstream myfile(paths);
+	if (myfile.is_open())
+	{
+		myfile << "2\n";
+		myfile.close();
+	}
 
   // Create player
   {

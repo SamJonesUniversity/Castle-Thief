@@ -13,10 +13,8 @@ void HurtComponent::update(double dt) {
 		if (damage == 1)
 		{
 			pl->setForDelete();
-			
 		}
-		
-    }
+	}
   }
 }
 
