@@ -1,5 +1,6 @@
 #include "cmp_pathfinder.h"
 #include "astar.h"
+#include "cmp_steering.h"
 #include <levelSystem.h>
 
 using namespace sf;

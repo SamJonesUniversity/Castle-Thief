@@ -2,6 +2,7 @@
 #include <LevelSystem.h>
 #include <array>
 #include <queue>
+#include "cmp_enemy_ai.h"
 
 using namespace std;
 using namespace sf;
@@ -139,9 +140,10 @@ vector<Vector2i> pathFind(Vector2i start, Vector2i finish) {
 						}
 						while (!queue[queue_index].empty()) {
 							queue[1 - queue_index].push(queue[queue_index].top());
-							queue[queue_index].push(m0);
+							queue[queue_index].pop();
 						}
-							
+						queue_index = 1 - queue_index;
+						queue[queue_index].push(m0);
 					}
 				}
 			}
