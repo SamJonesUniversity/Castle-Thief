@@ -49,14 +49,14 @@ void PlayerPhysicsComponent::update(double dt) {
 	  //dash();
 	  _candash = true; 
   }
-  if (_elapsed <= 1.7f && _dampener)
+  if (_elapsed <= 1.8f && _dampener)
   {
 	  setVelocity(Vector2f(0.f, 0.f));
 	  _dampener = false;
   }
 
   // Handle Dash
-  if (_candash && Keyboard::isKeyPressed(Keyboard::C))
+  if (_candash && Keyboard::isKeyPressed(Keyboard::C) && (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Right)))
   {
 	if (!buffer.loadFromFile("res/sounds/dash.wav")) {
 		std::cout << "File could not load" << std::endl;
