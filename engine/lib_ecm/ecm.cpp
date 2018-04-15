@@ -34,7 +34,7 @@ void Entity::render() {
 }
 
 int Entity::getHp() const { return _health; }
-int Entity::setHp() { return _health; }
+int Entity::setHp(int hp) { return _health = hp; }
 
 const sf::Vector2f& Entity::getPosition() const { return _position; }
 

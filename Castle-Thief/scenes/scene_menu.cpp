@@ -3,6 +3,7 @@
 #include "../Castle-Thief.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 using namespace sf;
@@ -20,18 +21,41 @@ void MenuScene::Load() {
 void MenuScene::Update(const double& dt) {
   // cout << "Menu Update "<<dt<<"\n";
 
-  if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
-    
-  }	
-  else if (sf::Keyboard::isKeyPressed(Keyboard::Num2)) {
-	  Engine::ChangeScene(&level1);
-  }
-  else if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
-	  
-  }
-  else if (sf::Keyboard::isKeyPressed(Keyboard::Num4)) {
-	  exit(0);
-  }
+	if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
+		string buffer;
+
+		// Load in file to buffer
+		ifstream f("res/savefile.txt");
+		if (f.good()) {
+			f.seekg(0, std::ios::end);
+			buffer.resize(f.tellg());
+			f.seekg(0);
+			f.read(&buffer[0], buffer.size());
+			f.close();
+		}
+		else {
+			throw string("Couldn't open save file.");
+		}
+
+		const char c = buffer[0];
+
+		if(c == 2) {
+			Engine::ChangeScene(&level2);
+		}
+		else
+		{
+			Engine::ChangeScene(&error1);
+		}
+	}	
+	else if (sf::Keyboard::isKeyPressed(Keyboard::Num2)) {
+		Engine::ChangeScene(&level1);
+	}
+	else if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
+	
+	}
+	else if (sf::Keyboard::isKeyPressed(Keyboard::Num4)) {
+		exit(0);
+	}
 
   Scene::Update(dt);
 }

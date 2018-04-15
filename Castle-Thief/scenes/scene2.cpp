@@ -6,6 +6,7 @@
 #include "../Castle-Thief.h"
 #include <LevelSystem.h>
 #include <iostream>
+#include <fstream>
 #include <thread>
 
 using namespace std;
@@ -19,6 +20,11 @@ void Level2Scene::Load() {
 
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
 	ls::setOffset(Vector2f(0, ho));
+
+	ofstream myfile;
+	myfile.open("res/savefile.txt", std::fstream::out | std::fstream::app);
+	myfile << "2\n";
+	myfile.close();
 
 	// Create player
 	{

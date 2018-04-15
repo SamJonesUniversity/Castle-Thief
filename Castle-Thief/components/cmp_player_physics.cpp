@@ -47,7 +47,7 @@ void PlayerPhysicsComponent::fire() const {
 
 		auto arrow = _parent->scene->makeEntity();
 		arrow->setPosition(spawnArrow);
-		//  arrow->addComponent<HurtComponent>();
+		arrow->addComponent<HurtComponent>();
 		arrow->addComponent<ArrowComponent>();
 
 		auto s = arrow->addComponent<ShapeComponent>();

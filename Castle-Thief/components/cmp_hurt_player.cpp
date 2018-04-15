@@ -9,12 +9,11 @@ void HurtComponent::update(double dt) {
 	  int damage = pl->getHp();
     if (length(pl->getPosition() - _parent->getPosition()) < 25.0) {
 		pl->setHp(damage-1);
-		if (damage == 0)
+		_parent->setForDelete();
+		if (damage == 1)
 		{
 			pl->setForDelete();
-			_parent->setForDelete();
 		}
-      
     }
   }
 }
