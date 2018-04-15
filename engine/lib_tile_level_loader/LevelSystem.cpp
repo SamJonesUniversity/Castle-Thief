@@ -49,17 +49,24 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
   int widthCheck = 0;
   for (int i = 0; i < buffer.size(); ++i) {
     const char c = buffer[i];
-    if (c == '\n') { // newline
-      if (w == 0) {  // if we haven't written width yet
-        w = i;       // set width
-      } else if (w != (widthCheck - 1)) {
-        throw string("non uniform width:" + to_string(h) + " ") + path;
-      }
-      widthCheck = 0;
-      h++; // increment height
-    } else {
-      temp_tiles.push_back((Tile)c);
-    }
+	if (c == 0)
+	{
+		i++;
+	}
+	else
+	{
+		if (c == '\n') { // newline
+		  if (w == 0) {  // if we haven't written width yet
+			w = i;       // set width
+		  } else if (w != (widthCheck - 1)) {
+			throw string("non uniform width:" + to_string(h) + " ") + path;
+		  }
+		  widthCheck = 0;
+		  h++; // increment height
+		} else {
+		  temp_tiles.push_back((Tile)c);
+		}
+	}
     ++widthCheck;
 	if (i == 590)
 	{
