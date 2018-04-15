@@ -13,6 +13,7 @@
 #include <fstream>
 #include <thread>
 #include <ShlObj_core.h>
+#include "../components/cmp_sprite.h"
 
 using namespace std;
 using namespace sf;
@@ -20,6 +21,8 @@ using namespace sf;
 static shared_ptr<Entity> player;
 static shared_ptr<Entity> enemy1;
 shared_ptr<PathfindingComponent> ai;
+
+sf::Texture texture;
 
 void Level1Scene::Load() {
 	cout << " Scene 1 Load" << endl;
@@ -43,13 +46,16 @@ void Level1Scene::Load() {
   // Create player
   {
     player = makeEntity();
+	texture.loadFromFile("res/thief.png");
 	player->setHp(3);
     player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
-    auto s = player->addComponent<ShapeComponent>();
+	auto s = player->addComponent<SpriteComponent>();
+	s->setSprite(texture, sf::IntRect(0, 0, 0, 0));
+	/*
     s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
     s->getShape().setFillColor(Color::Magenta);
     s->getShape().setOrigin(10.f, 15.f);
-
+	*/
 	player->addTag("player");
     player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
   }
@@ -107,6 +113,8 @@ void Level1Scene::UnLoad() {
  void Level1Scene::Update(const double& dt) {
 	 Scene::Update(dt);
 	 const auto pp = player->getPosition();
+
+
   if (ls::getTileAt(player->getPosition()) == ls::END) {
 	 Engine::ChangeScene((Scene*)&level2);
   }
