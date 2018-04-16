@@ -59,6 +59,7 @@ void MenuScene::Update(const double& dt) {
 		Engine::ChangeScene(&level1);
 	}
 	else if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
+		Engine::ChangeScene(&option);
 	
 	}
 	else if (sf::Keyboard::isKeyPressed(Keyboard::Num4)) {

@@ -4,6 +4,7 @@
 
 using namespace std;
 MenuScene menu;
+OptionsScene option;
 Level1Scene level1;
 Level2Scene level2;
 error error1;
