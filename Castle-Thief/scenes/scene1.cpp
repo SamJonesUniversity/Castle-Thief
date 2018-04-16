@@ -14,6 +14,7 @@
 #include <thread>
 #include <ShlObj_core.h>
 #include "../components/cmp_sprite.h"
+#include "SFMl/Graphics.hpp"
 
 using namespace std;
 using namespace sf;
@@ -46,11 +47,13 @@ void Level1Scene::Load() {
   // Create player
   {
     player = makeEntity();
-	texture.loadFromFile("res/thief.png");
 	player->setHp(3);
     player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
 	auto s = player->addComponent<SpriteComponent>();
-	s->setSprite(texture, sf::IntRect(0, 0, 0, 0));
+	texture.loadFromFile("res/thief.png");
+	s->getSprite().setOrigin(10.f,15.f);
+	s->getSprite().setTexture(texture);
+	s->getSprite().setTextureRect(sf::IntRect(0,0,114,114));
 	/*
     s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
     s->getShape().setFillColor(Color::Magenta);
