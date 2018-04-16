@@ -16,16 +16,16 @@ using namespace Physics;
 
 sf::SoundBuffer buffer;
 sf::Sound sound; 
-sf::Texture thief1;
-sf::Texture thief2;
-sf::Texture thief3;
-sf::Texture thief4;
+sf::Texture thiefDash;
+sf::Texture thiefRight;
+sf::Texture thiefLeft;
+sf::Texture thiefJump;
 
 sf::Texture arroww;
 double _elapsed = 0;
 std::shared_ptr<SpriteComponent> s;
 bool loaded = false;
-int spritesheetX, spritesheetY;
+//int spritesheetX, spritesheetY;
 
 bool PlayerPhysicsComponent::isGrounded() const {
   auto touch = getTouching();
@@ -53,10 +53,10 @@ void PlayerPhysicsComponent::update(double dt) {
 	
 	if (!loaded)
 	{
-		thief1.loadFromFile("res/thief.png", sf::IntRect(0, 114, 57, 57));
-		thief2.loadFromFile("res/thief.png", sf::IntRect(285, 0, 57, 57));
-		thief3.loadFromFile("res/thief.png", sf::IntRect(342, 0, 57, 57));
-		thief4.loadFromFile("res/thief.png", sf::IntRect(171, 57, 57, 57));
+		thiefDash.loadFromFile("res/thief.png", sf::IntRect(0, 114, 57, 57));
+		thiefRight.loadFromFile("res/thief.png", sf::IntRect(342, 0, 57, 57));
+		thiefLeft.loadFromFile("res/thief.png", sf::IntRect(285, 0, 57, 57));
+		thiefJump.loadFromFile("res/thief.png", sf::IntRect(171, 57, 57, 57));
 
 		s = _parent->addComponent<SpriteComponent>();
 		loaded = true;
@@ -87,7 +87,7 @@ void PlayerPhysicsComponent::update(double dt) {
 	sound.play();
 	//spritesheetX = 0, spritesheetY = 114;
 	s->getSprite().setOrigin(28.5f, 40.f);
-	s->getSprite().setTexture(thief1);
+	s->getSprite().setTexture(thiefDash);
 
 	if (_direction == false) //If player is facing right then dash right
 	{
@@ -138,7 +138,7 @@ void PlayerPhysicsComponent::update(double dt) {
 	  arrow->addComponent<ArrowComponent>();
 
 	  auto s = arrow->addComponent<SpriteComponent>();
-	  s->getSprite().setOrigin(50.f*direction, 8.f);;
+	  s->getSprite().setOrigin(15.f*direction, 20.f);;
 	  s->getSprite().setTexture(arroww);
 	  if (!_direction)
 	  {
@@ -174,7 +174,7 @@ void PlayerPhysicsComponent::update(double dt) {
 		{
 			//spritesheetX = 285, spritesheetY = 0;
 			s->getSprite().setOrigin(28.5f, 40.f);
-			s->getSprite().setTexture(thief2);
+			s->getSprite().setTexture(thiefRight);
 		}
       if (getVelocity().x < _maxVelocity.x - 800)
         impulse({(float)(dt * _groundspeed), 0});
@@ -184,7 +184,7 @@ void PlayerPhysicsComponent::update(double dt) {
 		{
 			//spritesheetX = 342, spritesheetY = 0;
 			s->getSprite().setOrigin(28.5f, 40.f);
-			s->getSprite().setTexture(thief3);
+			s->getSprite().setTexture(thiefLeft);
 		}
       if (getVelocity().x > -_maxVelocity.x + 800)
         impulse({-(float)(dt * _groundspeed), 0});
@@ -204,7 +204,7 @@ void PlayerPhysicsComponent::update(double dt) {
 		}
 		//spritesheetX = 171, spritesheetY = 57;
 		s->getSprite().setOrigin(28.5f, 40.f);
-		s->getSprite().setTexture(thief4);
+		s->getSprite().setTexture(thiefJump);
 		sound.setBuffer(buffer);
 		sound.play();
 

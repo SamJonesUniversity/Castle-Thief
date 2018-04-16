@@ -22,12 +22,11 @@ using namespace sf;
 static shared_ptr<Entity> player;
 static shared_ptr<Entity> enemy1;
 shared_ptr<PathfindingComponent> ai;
-
-sf::Texture texture;
-
+sf::Texture ghost;
 void Level1Scene::Load() {
 	cout << " Scene 1 Load" << endl;
 	ls::loadLevelFile("res/level_1.txt", 40.0f);
+	ghost.loadFromFile("res/ghost.png");
 
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
 	ls::setOffset(Vector2f(0, ho));
@@ -62,10 +61,10 @@ void Level1Scene::Load() {
 	  enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(i)) +
 		  Vector2f(0, 24));
 		  
-	  auto e = enemy1->addComponent<ShapeComponent>();
-	  e->setShape<sf::CircleShape>(16.f);
-	  e->getShape().setFillColor(Color::Red);
-	  e->getShape().setOrigin(16.f, 16.f);
+	  auto e = enemy1->addComponent<SpriteComponent>();
+	  e->getSprite().setTexture(ghost);
+	  e->getSprite().setTextureRect(sf::IntRect(0, 0, 32.5, 56));
+	  e->getSprite().setOrigin(15.f, 25.f);
 	  enemy1->addComponent<SteeringComponent>(player.get());
 	  
 	  enemy1->addTag("enemy");
