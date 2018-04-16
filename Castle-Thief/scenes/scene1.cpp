@@ -22,6 +22,11 @@ using namespace sf;
 
 static shared_ptr<Entity> player;
 static shared_ptr<Entity> enemy1;
+enum sf::Keyboard::Key left;
+enum sf::Keyboard::Key right;
+enum sf::Keyboard::Key jump;
+enum sf::Keyboard::Key dash;
+enum sf::Keyboard::Key shoot;
 shared_ptr<PathfindingComponent> ai;
 
 sf::Texture ghost;
@@ -134,6 +139,7 @@ void Level1Scene::UnLoad() {
   auto player_tile = Vector2i(player_pos / ls::getTileSize());
   auto path = pathFind(enemy_tile, player_tile);
   ai->setPath(path);*/
+
 
   if (Keyboard::isKeyPressed(Keyboard::Left))
   {
