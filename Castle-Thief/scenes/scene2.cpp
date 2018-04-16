@@ -92,6 +92,33 @@ void Level2Scene::Load() {
 		}
 	}
 
+
+	//Simulate long loading times
+	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+	cout << " Scene 2 Load Done" << endl;
+
+	setLoaded(true);
+
+	
+}
+
+void Level2Scene::UnLoad() {
+	cout << "Scene 2 Unload" << endl;
+	player.reset();
+	ls::unload();
+	Scene::UnLoad();
+}
+
+void Level2Scene::Update(const double& dt) {
+	Scene::Update(dt);
+	const auto pp = player->getPosition();
+	if (ls::getTileAt(player->getPosition()) == ls::END) {
+	}
+	else if (!player->isAlive()) {
+		Engine::ChangeScene((Scene*)&level2);
+	}
+
+
 	if (Keyboard::isKeyPressed(Keyboard::Left))
 	{
 		if (activeSprite2 != 1)
@@ -131,35 +158,10 @@ void Level2Scene::Load() {
 		{
 			auto s = player->addComponent<SpriteComponent>();
 			s->getSprite().setOrigin(28.5f, 40.f);
-			thief2.loadFromFile("res/thief.png", sf::IntRect(342, 285, 57, 57));
+			thief2.loadFromFile("res/thief.png", sf::IntRect(228, 285, 57, 57));
 			s->getSprite().setTexture(thief2);
 			activeSprite2 = 4;
 		}
-	}
-
-	//Simulate long loading times
-	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-	cout << " Scene 2 Load Done" << endl;
-
-	setLoaded(true);
-
-	
-}
-
-void Level2Scene::UnLoad() {
-	cout << "Scene 2 Unload" << endl;
-	player.reset();
-	ls::unload();
-	Scene::UnLoad();
-}
-
-void Level2Scene::Update(const double& dt) {
-	Scene::Update(dt);
-	const auto pp = player->getPosition();
-	if (ls::getTileAt(player->getPosition()) == ls::END) {
-	}
-	else if (!player->isAlive()) {
-		Engine::ChangeScene((Scene*)&level2);
 	}
 	
 }

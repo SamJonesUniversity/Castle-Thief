@@ -174,7 +174,7 @@ void Level1Scene::UnLoad() {
 	 {
 		  auto s = player->addComponent<SpriteComponent>();
 		  s->getSprite().setOrigin(28.5f, 40.f);
-		  thief.loadFromFile("res/thief.png", sf::IntRect(342, 285,57, 57));
+		  thief.loadFromFile("res/thief.png", sf::IntRect(228, 285,57, 57));
 		  s->getSprite().setTexture(thief);
 		  activeSprite = 4;
 	 }
