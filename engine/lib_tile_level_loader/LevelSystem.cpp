@@ -5,7 +5,7 @@ using namespace std;
 using namespace sf;
 
 std::map<LevelSystem::Tile, sf::Color> LevelSystem::_colours{
-    {WALL, Color::White}, {END, Color::Red}};
+    {WALL, Color::Green}, {END, Color::Red}};
 
 sf::Color LevelSystem::getColor(LevelSystem::Tile t) {
   auto it = _colours.find(t);
@@ -171,7 +171,7 @@ void LevelSystem::buildSprites(bool optimise) {
     auto s = make_unique<sf::RectangleShape>();
     s->setPosition(t.p);
     s->setSize(t.s);
-    s->setFillColor(Color::Red);
+    s->setFillColor(Color::Green);
     s->setFillColor(t.c);
     // s->setFillColor(Color(rand()%255,rand()%255,rand()%255));
     _sprites.push_back(move(s));
