@@ -13,6 +13,7 @@ public:
   static void loadLevelFile(const std::string&, float tileSize = 100.0f);
   static void unload();
   static void render(sf::RenderWindow& window);
+  static void renderBg(sf::RenderWindow& window, sf::Sprite& s);
 
   typedef unsigned char Tile;
 

@@ -5,7 +5,7 @@ using namespace std;
 using namespace sf;
 
 std::map<LevelSystem::Tile, sf::Color> LevelSystem::_colours{
-    {WALL, Color::Green}, {END, Color::Red}};
+    {WALL, Color::Black}, {END, Color::Blue}};
 
 sf::Color LevelSystem::getColor(LevelSystem::Tile t) {
   auto it = _colours.find(t);
@@ -185,11 +185,12 @@ void LevelSystem::render(RenderWindow& window) {
   for (auto& t : _sprites) {
     window.draw(*t);
   }
-	/*for (size_t i = 0; i < 30; i++) {
-		window.draw(*_sprites[i]);
-		
-  }*/
 }
+
+void LevelSystem::renderBg(RenderWindow& window, Sprite& s) {
+		window.draw(s);
+	}
+
 LevelSystem::Tile LevelSystem::getTile(sf::Vector2ul p) {
   if (p.x > _width || p.y > _height) {
     throw string("Tile out of range: ") + to_string(p.x) + "," +
