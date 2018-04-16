@@ -54,6 +54,7 @@ void Level1Scene::Load() {
 	s->getSprite().setOrigin(28.5f,40.f);
 	s->getSprite().setTexture(texture);
 	s->getSprite().setTextureRect(sf::IntRect(399,171,57,57));
+	s.reset();
 	/*
     s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
     s->getShape().setFillColor(Color::Magenta);
@@ -65,11 +66,13 @@ void Level1Scene::Load() {
   
   // Create Enemy
   {
-	//for (size_t i = 0; i < 9; i++)
-	//{
+	for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
+	{
 	  enemy1 = makeEntity();
-	  enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[0]) +
+	  enemy1->setHp(3);
+	  enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(i)) +
 		  Vector2f(0, 24));
+		  
 	  // *********************************
 	  // Add HurtComponent
 	  //enemy1->addComponent<HurtComponent>();
@@ -79,9 +82,11 @@ void Level1Scene::Load() {
 	  e->getShape().setFillColor(Color::Red);
 	  e->getShape().setOrigin(16.f, 16.f);
 	  enemy1->addComponent<SteeringComponent>(player.get());
+	  
+	  enemy1->addTag("enemy");
 	  //ai = enemy1->addComponent<PathfindingComponent>();
-	  //enemy->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
-	//}
+	  //enemy1->addComponent<PhysicsComponent>(true, Vector2f(20.f, 30.f));
+	}
 	  // Add EnemyAIComponent
 
 	  // *********************************
