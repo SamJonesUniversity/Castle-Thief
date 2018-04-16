@@ -51,9 +51,9 @@ void Level1Scene::Load() {
     player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
 	auto s = player->addComponent<SpriteComponent>();
 	texture.loadFromFile("res/thief.png");
-	s->getSprite().setOrigin(10.f,15.f);
+	s->getSprite().setOrigin(28.5f,40.f);
 	s->getSprite().setTexture(texture);
-	s->getSprite().setTextureRect(sf::IntRect(0,0,114,114));
+	s->getSprite().setTextureRect(sf::IntRect(399,171,57,57));
 	/*
     s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
     s->getShape().setFillColor(Color::Magenta);
