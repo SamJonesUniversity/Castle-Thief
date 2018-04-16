@@ -5,7 +5,6 @@
 #include <engine.h>
 #include <LevelSystem.h>
 #include "cmp_hurt_player.h"
-#include "cmp_hurt_enemy.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
@@ -16,15 +15,9 @@ using namespace Physics;
 
 sf::SoundBuffer buffer;
 sf::Sound sound; 
-sf::Texture thief1;
-sf::Texture thief2;
-sf::Texture thief3;
-sf::Texture thief4;
-
+sf::Texture thief;
 sf::Texture arroww;
 double _elapsed = 0;
-std::shared_ptr<SpriteComponent> s;
-bool loaded = false;
 int spritesheetX, spritesheetY;
 
 bool PlayerPhysicsComponent::isGrounded() const {
@@ -50,18 +43,11 @@ bool PlayerPhysicsComponent::isGrounded() const {
 }
 
 void PlayerPhysicsComponent::update(double dt) {
-	
-	if (!loaded)
-	{
-		thief1.loadFromFile("res/thief.png", sf::IntRect(0, 114, 57, 57));
-		thief2.loadFromFile("res/thief.png", sf::IntRect(285, 0, 57, 57));
-		thief3.loadFromFile("res/thief.png", sf::IntRect(342, 0, 57, 57));
-		thief4.loadFromFile("res/thief.png", sf::IntRect(171, 57, 57, 57));
 
-		s = _parent->addComponent<SpriteComponent>();
-		loaded = true;
-	}	
-
+	auto s = _parent->addComponent<SpriteComponent>();
+	thief.loadFromFile("res/thief.png", sf::IntRect(spritesheetX, spritesheetY, 57, 57));
+	s->getSprite().setOrigin(28.5f, 40.f);
+	s->getSprite().setTexture(thief);
   const auto pos = _parent->getPosition();
 
   _elapsed -= dt;
@@ -85,10 +71,7 @@ void PlayerPhysicsComponent::update(double dt) {
 	}
 	sound.setBuffer(buffer);
 	sound.play();
-	//spritesheetX = 0, spritesheetY = 114;
-	s->getSprite().setOrigin(28.5f, 40.f);
-	s->getSprite().setTexture(thief1);
-
+	spritesheetX = 0, spritesheetY = 114;
 	if (_direction == false) //If player is facing right then dash right
 	{
 	
@@ -134,7 +117,7 @@ void PlayerPhysicsComponent::update(double dt) {
 
 	  auto arrow = _parent->scene->makeEntity();
 	  arrow->setPosition(spawnArrow);
-	  arrow->addComponent<HurtComponentEnemy>();
+	  arrow->addComponent<HurtComponent>();
 	  arrow->addComponent<ArrowComponent>();
 
 	  auto s = arrow->addComponent<SpriteComponent>();
@@ -172,9 +155,7 @@ void PlayerPhysicsComponent::update(double dt) {
 	{
 		if (_grounded)
 		{
-			//spritesheetX = 285, spritesheetY = 0;
-			s->getSprite().setOrigin(28.5f, 40.f);
-			s->getSprite().setTexture(thief2);
+			spritesheetX = 285, spritesheetY = 0;
 		}
       if (getVelocity().x < _maxVelocity.x - 800)
         impulse({(float)(dt * _groundspeed), 0});
@@ -182,9 +163,7 @@ void PlayerPhysicsComponent::update(double dt) {
     } else {
 		if (_grounded)
 		{
-			//spritesheetX = 342, spritesheetY = 0;
-			s->getSprite().setOrigin(28.5f, 40.f);
-			s->getSprite().setTexture(thief3);
+			spritesheetX = 342, spritesheetY = 0;
 		}
       if (getVelocity().x > -_maxVelocity.x + 800)
         impulse({-(float)(dt * _groundspeed), 0});
@@ -202,9 +181,7 @@ void PlayerPhysicsComponent::update(double dt) {
 		if (!buffer.loadFromFile("res/sounds/jump.wav")) {
 			std::cout << "File Could not load" << std::endl;
 		}
-		//spritesheetX = 171, spritesheetY = 57;
-		s->getSprite().setOrigin(28.5f, 40.f);
-		s->getSprite().setTexture(thief4);
+		spritesheetX = 171, spritesheetY = 57;
 		sound.setBuffer(buffer);
 		sound.play();
 
