@@ -21,7 +21,6 @@ using namespace std;
 using namespace sf;
 
 static shared_ptr<Entity> player;
-static shared_ptr<Entity> back;
 static shared_ptr<Entity> enemy1;
 shared_ptr<PathfindingComponent> ai;
 
@@ -31,6 +30,7 @@ int activeSprite;
 
 sf::Texture texture;
 sf::Texture thief;
+sf::Sprite Sprite1;
 
 void Level1Scene::Load() {
 	cout << " Scene 1 Load" << endl;
@@ -39,17 +39,6 @@ void Level1Scene::Load() {
 
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
 	ls::setOffset(Vector2f(0, ho));
-
-	sf::FloatRect fBounds(0.f, 0.f, Engine::getWindowSize().x, Engine::getWindowSize().y);
-	sf::IntRect iBounds(fBounds);
-
-	texture.loadFromFile("res/background.png", sf::IntRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
-	texture.setRepeated(true);
-	back = makeEntity();
-	back->setPosition(Vector2f(fBounds.left, fBounds.top));
-	auto b = back->addComponent<SpriteComponent>();
-	b->getSprite().setOrigin(0.f, 0.f);
-	b->getSprite().setTexture(texture);
 
 	CHAR my_documents[MAX_PATH];
 	HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
@@ -62,6 +51,12 @@ void Level1Scene::Load() {
 		myfile << "2\n";
 		myfile.close();
 	}
+
+	texture.loadFromFile("res/background.png", sf::IntRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
+	texture.setRepeated(true);
+
+	Sprite1.setTexture(texture);
+
 
   // Create player
   {
@@ -195,6 +190,9 @@ void Level1Scene::UnLoad() {
 }
 
 void Level1Scene::Render() {
+  ls::renderBg(Engine::GetWindow(), Sprite1);
+
   ls::render(Engine::GetWindow());
+
   Scene::Render();
 }
