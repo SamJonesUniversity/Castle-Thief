@@ -16,16 +16,11 @@ using namespace Physics;
 
 sf::SoundBuffer buffer;
 sf::Sound sound; 
-sf::Texture thiefDash;
-sf::Texture thiefRight;
-sf::Texture thiefLeft;
-sf::Texture thiefJump;
 
 sf::Texture arroww;
+
 double _elapsed = 0;
-std::shared_ptr<SpriteComponent> s;
 bool loaded = false;
-//int spritesheetX, spritesheetY;
 
 bool PlayerPhysicsComponent::isGrounded() const {
   auto touch = getTouching();
@@ -49,18 +44,7 @@ bool PlayerPhysicsComponent::isGrounded() const {
   return false;
 }
 
-void PlayerPhysicsComponent::update(double dt) {
-	
-	if (!loaded)
-	{
-		thiefDash.loadFromFile("res/thief.png", sf::IntRect(0, 114, 57, 57));
-		thiefRight.loadFromFile("res/thief.png", sf::IntRect(342, 0, 57, 57));
-		thiefLeft.loadFromFile("res/thief.png", sf::IntRect(285, 0, 57, 57));
-		thiefJump.loadFromFile("res/thief.png", sf::IntRect(171, 57, 57, 57));
-
-		s = _parent->addComponent<SpriteComponent>();
-		loaded = true;
-	}	
+void PlayerPhysicsComponent::update(double dt) {	
 
   const auto pos = _parent->getPosition();
 
@@ -85,9 +69,6 @@ void PlayerPhysicsComponent::update(double dt) {
 	}
 	sound.setBuffer(buffer);
 	sound.play();
-	//spritesheetX = 0, spritesheetY = 114;
-	s->getSprite().setOrigin(28.5f, 40.f);
-	s->getSprite().setTexture(thiefDash);
 
 	if (_direction == false) //If player is facing right then dash right
 	{
@@ -149,7 +130,6 @@ void PlayerPhysicsComponent::update(double dt) {
 		  s->getSprite().setTextureRect(IntRect(32, 0, 32, 32));
 
 	  }
-	  //s->getSprite().setTextureRect(sf::IntRect(0, 0, 32, 32));
 
 	  auto p = arrow->addComponent<PhysicsComponent>(true, Vector2f(10.f*direction, 2.f));
 	  p->impulse(sf::rotate(Vector2f(20.f*direction, 0), -_parent->getRotation()));
@@ -170,22 +150,10 @@ void PlayerPhysicsComponent::update(double dt) {
     // Moving Either Left or Right
     if (Keyboard::isKeyPressed(Keyboard::Right)) 
 	{
-		if (_grounded)
-		{
-			//spritesheetX = 285, spritesheetY = 0;
-			s->getSprite().setOrigin(28.5f, 40.f);
-			s->getSprite().setTexture(thiefRight);
-		}
       if (getVelocity().x < _maxVelocity.x - 800)
         impulse({(float)(dt * _groundspeed), 0});
 	     _direction = false; //User is facing right
     } else {
-		if (_grounded)
-		{
-			//spritesheetX = 342, spritesheetY = 0;
-			s->getSprite().setOrigin(28.5f, 40.f);
-			s->getSprite().setTexture(thiefLeft);
-		}
       if (getVelocity().x > -_maxVelocity.x + 800)
         impulse({-(float)(dt * _groundspeed), 0});
 	    _direction = true; //User is facing left
@@ -202,9 +170,7 @@ void PlayerPhysicsComponent::update(double dt) {
 		if (!buffer.loadFromFile("res/sounds/jump.wav")) {
 			std::cout << "File Could not load" << std::endl;
 		}
-		//spritesheetX = 171, spritesheetY = 57;
-		s->getSprite().setOrigin(28.5f, 40.f);
-		s->getSprite().setTexture(thiefJump);
+
 		sound.setBuffer(buffer);
 		sound.play();
 

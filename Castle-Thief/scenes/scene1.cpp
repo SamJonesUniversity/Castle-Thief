@@ -15,14 +15,23 @@
 #include <ShlObj_core.h>
 #include "../components/cmp_sprite.h"
 #include "SFMl/Graphics.hpp"
+#include <SFML/Window/Keyboard.hpp>
 
 using namespace std;
 using namespace sf;
 
 static shared_ptr<Entity> player;
+static shared_ptr<Entity> back;
 static shared_ptr<Entity> enemy1;
 shared_ptr<PathfindingComponent> ai;
+
 sf::Texture ghost;
+bool standing;
+int activeSprite;
+
+sf::Texture texture;
+sf::Texture thief;
+
 void Level1Scene::Load() {
 	cout << " Scene 1 Load" << endl;
 	ls::loadLevelFile("res/level_1.txt", 40.0f);
@@ -30,6 +39,17 @@ void Level1Scene::Load() {
 
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
 	ls::setOffset(Vector2f(0, ho));
+
+	sf::FloatRect fBounds(0.f, 0.f, Engine::getWindowSize().x, Engine::getWindowSize().y);
+	sf::IntRect iBounds(fBounds);
+
+	texture.loadFromFile("res/background.png", sf::IntRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
+	texture.setRepeated(true);
+	back = makeEntity();
+	back->setPosition(Vector2f(fBounds.left, fBounds.top));
+	auto b = back->addComponent<SpriteComponent>();
+	b->getSprite().setOrigin(0.f, 0.f);
+	b->getSprite().setTexture(texture);
 
 	CHAR my_documents[MAX_PATH];
 	HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
@@ -49,16 +69,21 @@ void Level1Scene::Load() {
 	player->setHp(3);
     player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
 	player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
+	auto s = player->addComponent<SpriteComponent>();
+	s->getSprite().setOrigin(28.5f, 40.f);
+	thief.loadFromFile("res/thief.png", sf::IntRect(0, 0, 57, 57));
+	s->getSprite().setTexture(thief);
+	activeSprite = 0;
 	player->addTag("player");
   }
   
   // Create Enemy
   {
-	for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
-	{
+	//for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
+	//{
 	  enemy1 = makeEntity();
 	  enemy1->setHp(3);
-	  enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(i)) +
+	  enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(0)) +
 		  Vector2f(0, 24));
 		  
 	  auto e = enemy1->addComponent<SpriteComponent>();
@@ -68,7 +93,7 @@ void Level1Scene::Load() {
 	  enemy1->addComponent<SteeringComponent>(player.get());
 	  
 	  enemy1->addTag("enemy");
-	}
+	//
   }
   
   // Add physics colliders to level tiles.
@@ -114,6 +139,57 @@ void Level1Scene::UnLoad() {
   auto player_tile = Vector2i(player_pos / ls::getTileSize());
   auto path = pathFind(enemy_tile, player_tile);
   ai->setPath(path);*/
+
+  if (Keyboard::isKeyPressed(Keyboard::Left))
+  {
+	  if (activeSprite != 1)
+	  {
+		  auto s = player->addComponent<SpriteComponent>();
+		  s->getSprite().setOrigin(28.5f, 40.f);
+		  thief.loadFromFile("res/thief.png", sf::IntRect(0, 114, 57, 57));
+		  s->getSprite().setTexture(thief);
+		  activeSprite = 1;
+	  }
+  }
+  else if (Keyboard::isKeyPressed(Keyboard::Right))
+  {
+	  if (activeSprite != 2)
+	  {
+		  auto s = player->addComponent<SpriteComponent>();
+		  s->getSprite().setOrigin(28.5f, 40.f);
+		  thief.loadFromFile("res/thief.png", sf::IntRect(285, 0, 57, 57));
+		  s->getSprite().setTexture(thief);
+		  activeSprite = 2;
+	  }
+  }
+  else if (Keyboard::isKeyPressed(Keyboard::C))
+  {
+	  if (activeSprite != 3)
+	  {
+		  auto s = player->addComponent<SpriteComponent>();
+		  s->getSprite().setOrigin(28.5f, 40.f);
+		  thief.loadFromFile("res/thief.png", sf::IntRect(342, 0, 57, 57));
+		  s->getSprite().setTexture(thief);
+		  activeSprite = 3;
+	  }
+  }
+  else if (Keyboard::isKeyPressed(Keyboard::Z))
+  {
+	 if(activeSprite != 4)
+	 {
+		  auto s = player->addComponent<SpriteComponent>();
+		  s->getSprite().setOrigin(28.5f, 40.f);
+		  thief.loadFromFile("res/thief.png", sf::IntRect(171, 57, 57, 57));
+		  s->getSprite().setTexture(thief);
+		  activeSprite = 4;
+	 }
+  }
+  /*else if (PlayerPhysicsComponent::getVelocity)
+  {
+	  s->getSprite().setOrigin(28.5f, 40.f);
+	  thief.loadFromFile("res/thief.png", sf::IntRect(0, 0, 57, 57));
+	  s->getSprite().setTexture(thief);
+  }*/ 
 
   Scene::Update(dt);
 }
