@@ -151,11 +151,20 @@ void PlayerPhysicsComponent::update(double dt) {
   if (Keyboard::isKeyPressed(Keyboard::Left) ||
       Keyboard::isKeyPressed(Keyboard::Right)) {
     // Moving Either Left or Right
-    if (Keyboard::isKeyPressed(Keyboard::Right)) {
+    if (Keyboard::isKeyPressed(Keyboard::Right)) 
+	{
+		if (_grounded)
+		{
+			spritesheetX = 285, spritesheetY = 0;
+		}
       if (getVelocity().x < _maxVelocity.x - 800)
         impulse({(float)(dt * _groundspeed), 0});
 	     _direction = false; //User is facing right
     } else {
+		if (_grounded)
+		{
+			spritesheetX = 342, spritesheetY = 0;
+		}
       if (getVelocity().x > -_maxVelocity.x + 800)
         impulse({-(float)(dt * _groundspeed), 0});
 	    _direction = true; //User is facing left

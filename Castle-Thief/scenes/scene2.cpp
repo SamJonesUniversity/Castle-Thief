@@ -38,13 +38,7 @@ void Level2Scene::Load() {
 	{
 		player = makeEntity();
 		player->setHp(3);
-		player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
-		auto s = player->addComponent<SpriteComponent>();
-		texture2.loadFromFile("res/thief.png");
-		s->getSprite().setOrigin(28.5f, 40.f);
-		s->getSprite().setTexture(texture2);
-		s->getSprite().setTextureRect(sf::IntRect(399, 171, 57, 57));
-
+		player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));;
 		player->addTag("player");
 		player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
 	}
