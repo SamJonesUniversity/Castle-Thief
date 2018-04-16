@@ -8,6 +8,7 @@ class SteeringComponent : public Component {
 		Flee _flee;
 		Entity *_player;
 		bool validMove(const sf::Vector2f&) const;
+		bool plusorminus;
 	public:
 		void update(double override);
 		void move(const sf::Vector2f&);

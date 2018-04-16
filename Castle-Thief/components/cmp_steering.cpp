@@ -1,15 +1,16 @@
 #include "cmp_steering.h"
+#include <cstdlib>
 
 using namespace sf;
 
 void SteeringComponent::update(double dt) {
 	//if target play further than 100px seek
-	if (length(_parent->getPosition() - _player->getPosition()) > 100.0f) {
+	if (length(_parent->getPosition() - _player->getPosition()) > 150.0f) {
 		auto output = _seek.getAiMove();
 		move(output.direction * (float)dt);
 	}
 	//if target play closer than 50px seek
-	else if (length(_parent->getPosition() - _player->getPosition()) < 50.0f) {
+	else if (length(_parent->getPosition() - _player->getPosition()) < 100.0f) {
 		auto output = _flee.getAiMove();
 		move(output.direction * (float)dt);
 	}
@@ -29,6 +30,20 @@ bool SteeringComponent::validMove(const sf::Vector2f& pos) const
 
 void SteeringComponent::move(const sf::Vector2f &p) {
 	auto new_pos = _parent->getPosition() + p;
+
+	if(plusorminus)
+	{ 
+		new_pos.x += rand() % 2;
+		new_pos.y += rand() % 2;
+		plusorminus = false;
+	}
+	else
+	{
+		new_pos.x -= rand() % 2;
+		new_pos.y -= rand() % 2;
+		plusorminus = true;
+	}
+
 	if (validMove(new_pos)) {
 		_parent->setPosition(new_pos);
 	}

@@ -55,26 +55,21 @@ void Level1Scene::Load() {
   
   // Create Enemy
   {
-	//for (size_t i = 0; i < 9; i++)
-	//{
+	for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
+	{
 	  enemy1 = makeEntity();
-	  enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[0]) +
+	  enemy1->setHp(3);
+	  enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(i)) +
 		  Vector2f(0, 24));
-	  // *********************************
-	  // Add HurtComponent
-	  //enemy1->addComponent<HurtComponent>();
-	  // Add ShapeComponent, Red 16.f Circle
+		  
 	  auto e = enemy1->addComponent<ShapeComponent>();
 	  e->setShape<sf::CircleShape>(16.f);
 	  e->getShape().setFillColor(Color::Red);
 	  e->getShape().setOrigin(16.f, 16.f);
 	  enemy1->addComponent<SteeringComponent>(player.get());
-	  //ai = enemy1->addComponent<PathfindingComponent>();
-	  //enemy->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
-	//}
-	  // Add EnemyAIComponent
-
-	  // *********************************
+	  
+	  enemy1->addTag("enemy");
+	}
   }
   
   // Add physics colliders to level tiles.
