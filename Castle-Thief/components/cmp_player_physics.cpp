@@ -45,10 +45,9 @@ bool PlayerPhysicsComponent::isGrounded() const {
 void PlayerPhysicsComponent::update(double dt) {
 
 	auto s = _parent->addComponent<SpriteComponent>();
-	thief.loadFromFile("res/thief.png");
+	thief.loadFromFile("res/thief.png", sf::IntRect(spritesheetX, spritesheetY, 57, 57));
 	s->getSprite().setOrigin(28.5f, 40.f);
 	s->getSprite().setTexture(thief);
-	s->getSprite().setTextureRect(sf::IntRect(spritesheetX, spritesheetY, 57, 57));
   const auto pos = _parent->getPosition();
 
   _elapsed -= dt;
