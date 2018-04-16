@@ -49,18 +49,8 @@ void Level1Scene::Load() {
     player = makeEntity();
 	player->setHp(3);
     player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
-	auto s = player->addComponent<SpriteComponent>();
-	texture.loadFromFile("res/thief.png");
-	s->getSprite().setOrigin(28.5f,40.f);
-	s->getSprite().setTexture(texture);
-	s->getSprite().setTextureRect(sf::IntRect(399,171,57,57));
-	/*
-    s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
-    s->getShape().setFillColor(Color::Magenta);
-    s->getShape().setOrigin(10.f, 15.f);
-	*/
+	player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
 	player->addTag("player");
-    player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
   }
   
   // Create Enemy

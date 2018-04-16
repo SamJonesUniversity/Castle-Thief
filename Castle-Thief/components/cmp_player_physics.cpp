@@ -7,6 +7,7 @@
 #include "cmp_hurt_player.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 using namespace sf;
@@ -14,7 +15,10 @@ using namespace Physics;
 
 sf::SoundBuffer buffer;
 sf::Sound sound; 
+sf::Texture thief;
+sf::Texture arroww;
 double _elapsed = 0;
+int spritesheetX, spritesheetY;
 
 bool PlayerPhysicsComponent::isGrounded() const {
   auto touch = getTouching();
@@ -40,6 +44,11 @@ bool PlayerPhysicsComponent::isGrounded() const {
 
 void PlayerPhysicsComponent::update(double dt) {
 
+	auto s = _parent->addComponent<SpriteComponent>();
+	thief.loadFromFile("res/thief.png");
+	s->getSprite().setOrigin(28.5f, 40.f);
+	s->getSprite().setTexture(thief);
+	s->getSprite().setTextureRect(sf::IntRect(spritesheetX, spritesheetY, 57, 57));
   const auto pos = _parent->getPosition();
 
   _elapsed -= dt;
@@ -63,8 +72,10 @@ void PlayerPhysicsComponent::update(double dt) {
 	}
 	sound.setBuffer(buffer);
 	sound.play();
+	spritesheetX = 0, spritesheetY = 114;
 	if (_direction == false) //If player is facing right then dash right
 	{
+	
 		setVelocity(Vector2f(700.f, 0.f));
 		move(Vector2f(pos.x + 200.f, pos.y));
 		impulse(Vector2f(600.f, 0));
@@ -88,14 +99,15 @@ void PlayerPhysicsComponent::update(double dt) {
   //handles arrow code
   if (_canfire && Keyboard::isKeyPressed(Keyboard::X))
   {
+	  arroww.loadFromFile("res/arrow.png");
 	  int direction = 1;
 	  if (_direction)
 	  {
 		  direction = -1;
 	  }
-
+	 
 	  if (!buffer.loadFromFile("res/sounds/shoot.wav")) {
-		  std::cout << "Could not laod file" << std::endl;
+		  std::cout << "Could not load file" << std::endl;
 	  }
 	  sound.setBuffer(buffer);
 	  sound.play();
@@ -109,10 +121,19 @@ void PlayerPhysicsComponent::update(double dt) {
 	  arrow->addComponent<HurtComponent>();
 	  arrow->addComponent<ArrowComponent>();
 
-	  auto s = arrow->addComponent<ShapeComponent>();
-	  s->getShape().setOrigin(50.f*direction, 8.f);;
-	  s->setShape<sf::RectangleShape>(Vector2f(10.f, 2.f));
-	  s->getShape().setFillColor(Color::Blue);
+	  auto s = arrow->addComponent<SpriteComponent>();
+	  s->getSprite().setOrigin(50.f*direction, 8.f);;
+	  s->getSprite().setTexture(arroww);
+	  if (!_direction)
+	  {
+		  s->getSprite().setTextureRect(IntRect(0, 0, 32, 32));
+	  }
+	  else
+	  {
+		  s->getSprite().setTextureRect(IntRect(32, 0, 32, 32));
+
+	  }
+	  //s->getSprite().setTextureRect(sf::IntRect(0, 0, 32, 32));
 
 	  auto p = arrow->addComponent<PhysicsComponent>(true, Vector2f(10.f*direction, 2.f));
 	  p->impulse(sf::rotate(Vector2f(20.f*direction, 0), -_parent->getRotation()));
@@ -152,6 +173,7 @@ void PlayerPhysicsComponent::update(double dt) {
 		if (!buffer.loadFromFile("res/sounds/jump.wav")) {
 			std::cout << "File Could not load" << std::endl;
 		}
+		spritesheetX = 171, spritesheetY = 57;
 		sound.setBuffer(buffer);
 		sound.play();
 

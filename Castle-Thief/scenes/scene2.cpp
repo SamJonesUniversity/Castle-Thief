@@ -14,7 +14,7 @@ using namespace std;
 using namespace sf;
 
 static shared_ptr<Entity> player;
-
+sf::Texture texture2;
 void Level2Scene::Load() {
 	cout << " Scene 2 Load" << endl;
 	ls::loadLevelFile("res/level_2.txt", 40.0f);
@@ -39,10 +39,11 @@ void Level2Scene::Load() {
 		player = makeEntity();
 		player->setHp(3);
 		player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
-		auto s = player->addComponent<ShapeComponent>();
-		s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
-		s->getShape().setFillColor(Color::Magenta);
-		s->getShape().setOrigin(10.f, 15.f);
+		auto s = player->addComponent<SpriteComponent>();
+		texture2.loadFromFile("res/thief.png");
+		s->getSprite().setOrigin(28.5f, 40.f);
+		s->getSprite().setTexture(texture2);
+		s->getSprite().setTextureRect(sf::IntRect(399, 171, 57, 57));
 
 		player->addTag("player");
 		player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
