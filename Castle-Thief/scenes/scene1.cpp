@@ -141,7 +141,7 @@ void Level1Scene::UnLoad() {
 	  {
 		  auto s = player->addComponent<SpriteComponent>();
 		  s->getSprite().setOrigin(28.5f, 40.f);
-		  thief.loadFromFile("res/thief.png", sf::IntRect(0, 114, 57, 57));
+		  thief.loadFromFile("res/thief.png", sf::IntRect(285, 0, 57, 57));
 		  s->getSprite().setTexture(thief);
 		  activeSprite = 1;
 	  }
@@ -152,7 +152,7 @@ void Level1Scene::UnLoad() {
 	  {
 		  auto s = player->addComponent<SpriteComponent>();
 		  s->getSprite().setOrigin(28.5f, 40.f);
-		  thief.loadFromFile("res/thief.png", sf::IntRect(285, 0, 57, 57));
+		  thief.loadFromFile("res/thief.png", sf::IntRect(342, 0, 57, 57));
 		  s->getSprite().setTexture(thief);
 		  activeSprite = 2;
 	  }
@@ -163,7 +163,7 @@ void Level1Scene::UnLoad() {
 	  {
 		  auto s = player->addComponent<SpriteComponent>();
 		  s->getSprite().setOrigin(28.5f, 40.f);
-		  thief.loadFromFile("res/thief.png", sf::IntRect(342, 0, 57, 57));
+		  thief.loadFromFile("res/thief.png", sf::IntRect(57, 124, 57, 57));
 		  s->getSprite().setTexture(thief);
 		  activeSprite = 3;
 	  }
@@ -174,7 +174,7 @@ void Level1Scene::UnLoad() {
 	 {
 		  auto s = player->addComponent<SpriteComponent>();
 		  s->getSprite().setOrigin(28.5f, 40.f);
-		  thief.loadFromFile("res/thief.png", sf::IntRect(171, 57, 57, 57));
+		  thief.loadFromFile("res/thief.png", sf::IntRect(342, 285,57, 57));
 		  s->getSprite().setTexture(thief);
 		  activeSprite = 4;
 	 }
