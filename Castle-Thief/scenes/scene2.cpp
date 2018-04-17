@@ -9,13 +9,15 @@
 #include <fstream>
 #include <thread>
 #include <ShlObj_core.h>
+#include "../components/cmp_steering.h"
 
 using namespace std;
 using namespace sf;
 
 static shared_ptr<Entity> player;
+static shared_ptr<Entity> enemy1;
 sf::Texture backTexture;
-sf::Texture texture2;
+sf::Texture ghost2;
 sf::Sprite Sprite2;
 sf::Texture thief2;
 bool standing2;
@@ -26,6 +28,7 @@ void Level2Scene::Load() {
 	backTexture.setRepeated(true);
 
 	Sprite2.setTexture(backTexture);
+	ghost2.loadFromFile("res/ghost.png");
 
 	cout << " Scene 2 Load" << endl;
 	ls::loadLevelFile("res/level_2.txt", 40.0f);
@@ -60,25 +63,29 @@ void Level2Scene::Load() {
 	}
 
 	// Create Enemy
-	/*{
-		for (int i = 0; i < 9; i++)
+	{
+		for (int i = 0; i < ls::findTiles(ls::ENEMY).size() - 1; i++)
 		{
-			auto enemy = makeEntity();
-			enemy->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[0]) +
+			enemy1 = makeEntity();
+			enemy1->setHp(3);
+			enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(i)) +
 				Vector2f(0, 24));
-			// *********************************
-			// Add HurtComponent
-			enemy->addComponent<HurtComponent>();
-			// Add ShapeComponent, Red 16.f Circle
-			auto e = enemy->addComponent<ShapeComponent>();
-			e->setShape<sf::CircleShape>(16.f);
-			e->getShape().setFillColor(Color::Red);
-			e->getShape().setOrigin(16.f, 16.f);
-		}
-		// Add EnemyAIComponent
+			enemy1->addComponent<HurtComponent>();
+			auto e = enemy1->addComponent<SpriteComponent>();
+			e->getSprite().setTexture(ghost2);
+			e->getSprite().setTextureRect(sf::IntRect(0, 0, 32.5, 56));
+			e->getSprite().setOrigin(15.f, 25.f);
+			enemy1->addComponent<SteeringComponent>(player.get());
 
-		// *********************************
-	}*/
+			enemy1->addTag("enemy");
+		}
+	}
+	//Adds a invisible enemy so that shooting an arrow when all enemie are dead does not crash the game.
+	enemy1 = makeEntity();
+	enemy1->setHp(3);
+	enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(ls::findTiles(ls::ENEMY).size())) +
+		Vector2f(0, 24));
+	enemy1->addTag("enemy");
 
 	// Add physics colliders to level tiles.
 	{

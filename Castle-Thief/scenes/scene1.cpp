@@ -73,13 +73,13 @@ void Level1Scene::Load() {
   
   // Create Enemy
   {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 	  enemy1 = makeEntity();
 	  enemy1->setHp(3);
 	  enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(i)) +
 		  Vector2f(0, 24));
-		  
+	  enemy1->addComponent<HurtComponent>();  
 	  auto e = enemy1->addComponent<SpriteComponent>();
 	  e->getSprite().setTexture(ghost);
 	  e->getSprite().setTextureRect(sf::IntRect(0, 0, 32.5, 56));

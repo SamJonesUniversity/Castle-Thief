@@ -5,6 +5,7 @@ using namespace std;
 using namespace sf;
 
 void HurtComponentEnemy::update(double dt) {
+
 	if (auto en = _enemy.lock()) {
 		int damage = en->getHp();
 	if (length(en->getPosition() - _parent->getPosition()) < 25.0) {
@@ -14,9 +15,9 @@ void HurtComponentEnemy::update(double dt) {
 		{
 			en->setForDelete();
 		}
-	}
-	}
+		}
+		}
 	}
 
 HurtComponentEnemy::HurtComponentEnemy(Entity* e)
-	: Component(e), _enemy() {}
+	: Component(e), _enemy(_parent->scene->ents.find("enemy")[0]) {}

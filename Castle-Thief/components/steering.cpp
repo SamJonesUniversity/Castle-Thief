@@ -6,7 +6,7 @@ AIMoveOut Seek::getAiMove() const noexcept {
 	AIMoveOut steering;
 	steering.direction = _target->getPosition() - _character->getPosition();
 	steering.direction = normalize(steering.direction);
-	steering.direction *= _maxSpeed;
+	steering.direction *= 50.f;
 	steering.rotation = 0.0f;
 	return steering;
 }
