@@ -7,6 +7,7 @@ MenuScene menu;
 OptionsScene option;
 Level1Scene level1;
 Level2Scene level2;
+WinScene win;
 error error1;
 
 int main() {
