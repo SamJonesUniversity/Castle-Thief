@@ -22,7 +22,6 @@ using namespace sf;
 
 static shared_ptr<Entity> player;
 static shared_ptr<Entity> enemy1;
-shared_ptr<PathfindingComponent> ai;
 
 sf::Texture ghost;
 bool standing;
@@ -74,11 +73,11 @@ void Level1Scene::Load() {
   
   // Create Enemy
   {
-	//for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
-	//{
+	for (int i = 0; i < 3; i++)
+	{
 	  enemy1 = makeEntity();
 	  enemy1->setHp(3);
-	  enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(0)) +
+	  enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(i)) +
 		  Vector2f(0, 24));
 		  
 	  auto e = enemy1->addComponent<SpriteComponent>();
@@ -88,8 +87,14 @@ void Level1Scene::Load() {
 	  enemy1->addComponent<SteeringComponent>(player.get());
 	  
 	  enemy1->addTag("enemy");
-	//
+	 }
   }
+	//Adds a invisible enemy so that shooting an arrow when all enemie are dead does not crash the game.
+	enemy1 = makeEntity();
+	enemy1->setHp(3);
+	enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(3)) +
+		Vector2f(0, 24));
+	enemy1->addTag("enemy");
   
   // Add physics colliders to level tiles.
   {
@@ -128,12 +133,6 @@ void Level1Scene::UnLoad() {
   else if (!player->isAlive()) {
 	 Engine::ChangeScene((Scene*)&level1);
   }
-  /*auto enemy_pos = enemy1->getPosition() - ls::getOffset();
-  auto enemy_tile = Vector2i(enemy_pos / ls::getTileSize());
-  auto player_pos = player->getPosition() - ls::getOffset();
-  auto player_tile = Vector2i(player_pos / ls::getTileSize());
-  auto path = pathFind(enemy_tile, player_tile);
-  ai->setPath(path);*/
 
   if (Keyboard::isKeyPressed(Keyboard::Left))
   {
@@ -179,12 +178,6 @@ void Level1Scene::UnLoad() {
 		  activeSprite = 4;
 	 }
   }
-  /*else if (PlayerPhysicsComponent::getVelocity)
-  {
-	  s->getSprite().setOrigin(28.5f, 40.f);
-	  thief.loadFromFile("res/thief.png", sf::IntRect(0, 0, 57, 57));
-	  s->getSprite().setTexture(thief);
-  }*/ 
 
   Scene::Update(dt);
 }
