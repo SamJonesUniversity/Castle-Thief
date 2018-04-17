@@ -26,9 +26,13 @@ static shared_ptr<Entity> enemy1;
 sf::Texture ghost;
 bool standing;
 int activeSprite;
+int heartSpriteNum;
 
 sf::Texture texture;
 sf::Texture thief;
+sf::Texture heart;
+
+sf::Sprite healthSprite;
 sf::Sprite Sprite1;
 
 void Level1Scene::Load() {
@@ -47,7 +51,7 @@ void Level1Scene::Load() {
 	ofstream myfile(paths);
 	if (myfile.is_open())
 	{
-		myfile << "2\n";
+		myfile << "1\n";
 		myfile.close();
 	}
 
@@ -56,6 +60,8 @@ void Level1Scene::Load() {
 
 	Sprite1.setTexture(texture);
 
+	heart.loadFromFile("res/heart.png", sf::IntRect(0, 0, 50, 50));
+	healthSprite.setTexture(heart);
 
   // Create player
   {
@@ -129,9 +135,11 @@ void Level1Scene::UnLoad() {
 
   if (ls::getTileAt(player->getPosition()) == ls::END) {
 	 Engine::ChangeScene((Scene*)&level2);
+	 return;
   }
   else if (!player->isAlive()) {
 	 Engine::ChangeScene((Scene*)&level1);
+	 return;
   }
 
   if (Keyboard::isKeyPressed(Keyboard::Left))
@@ -179,6 +187,25 @@ void Level1Scene::UnLoad() {
 	 }
   }
 
+  // handle heart sprite
+  {
+	if(player->isAlive())
+	{
+	  if (player->getHp() == 2 && heartSpriteNum != 2)
+	  {
+			heart.loadFromFile("res/heart.png", sf::IntRect(50, 0, 50, 50));
+			healthSprite.setTexture(heart);
+			heartSpriteNum = 2;
+	  }
+	  else if (player->getHp() == 1 && heartSpriteNum != 3)
+	  {
+			heart.loadFromFile("res/heart.png", sf::IntRect(100, 0, 50, 50));
+			healthSprite.setTexture(heart);
+			heartSpriteNum = 3;
+	  }
+	}
+  }
+
   Scene::Update(dt);
 }
 
@@ -186,6 +213,8 @@ void Level1Scene::Render() {
   ls::renderBg(Engine::GetWindow(), Sprite1);
 
   ls::render(Engine::GetWindow());
+  
+  ls::renderBg(Engine::GetWindow(), healthSprite);
 
   Scene::Render();
 }

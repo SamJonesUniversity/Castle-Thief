@@ -2,6 +2,13 @@
 
 #include "engine.h"
 
+class tutorial : public Scene {
+public:
+	void Load() override;
+
+	void Update(const double& dt) override;
+};
+
 class Level1Scene : public Scene {
 public:
   void Load() override;

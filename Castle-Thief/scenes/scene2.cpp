@@ -18,10 +18,15 @@ static shared_ptr<Entity> player;
 static shared_ptr<Entity> enemy1;
 sf::Texture backTexture;
 sf::Texture ghost2;
-sf::Sprite Sprite2;
 sf::Texture thief2;
+sf::Texture heart2;
+
+sf::Sprite healthSprite2;
+sf::Sprite Sprite2;
+
 bool standing2;
 int activeSprite2;
+int heartSpriteNum2;
 
 void Level2Scene::Load() {
 	backTexture.loadFromFile("res/background.png", sf::IntRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
@@ -29,6 +34,9 @@ void Level2Scene::Load() {
 
 	Sprite2.setTexture(backTexture);
 	ghost2.loadFromFile("res/ghost.png");
+
+	heart2.loadFromFile("res/heart.png", sf::IntRect(0, 0, 50, 50));
+	healthSprite2.setTexture(heart2);
 
 	cout << " Scene 2 Load" << endl;
 	ls::loadLevelFile("res/level_2.txt", 40.0f);
@@ -64,7 +72,7 @@ void Level2Scene::Load() {
 
 	// Create Enemy
 	{
-		for (int i = 0; i < ls::findTiles(ls::ENEMY).size() - 1; i++)
+		for (int i = 0; i < ls::findTiles(ls::ENEMY).size() - 2; i++)
 		{
 			enemy1 = makeEntity();
 			enemy1->setHp(3);
@@ -83,7 +91,7 @@ void Level2Scene::Load() {
 	//Adds a invisible enemy so that shooting an arrow when all enemie are dead does not crash the game.
 	enemy1 = makeEntity();
 	enemy1->setHp(3);
-	enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(ls::findTiles(ls::ENEMY).size())) +
+	enemy1->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY).at(ls::findTiles(ls::ENEMY).size() - 1)) +
 		Vector2f(0, 24));
 	enemy1->addTag("enemy");
 
@@ -121,9 +129,11 @@ void Level2Scene::Update(const double& dt) {
 	const auto pp = player->getPosition();
 	if (ls::getTileAt(player->getPosition()) == ls::END) {
 		Engine::ChangeScene((Scene*)&win);
+		return;
 	}
 	else if (!player->isAlive()) {
 		Engine::ChangeScene((Scene*)&level2);
+		return;
 	}
 
 
@@ -171,12 +181,34 @@ void Level2Scene::Update(const double& dt) {
 			activeSprite2 = 4;
 		}
 	}
+
+	// handle heart sprite
+	{
+		if (player->isAlive())
+		{
+			if (player->getHp() == 2 && heartSpriteNum2 != 2)
+			{
+				heart2.loadFromFile("res/heart.png", sf::IntRect(50, 0, 50, 50));
+				healthSprite2.setTexture(heart2);
+				heartSpriteNum2 = 2;
+			}
+			else if (player->getHp() == 1 && heartSpriteNum2 != 3)
+			{
+				heart2.loadFromFile("res/heart.png", sf::IntRect(100, 0, 50, 50));
+				healthSprite2.setTexture(heart2);
+				heartSpriteNum2 = 3;
+			}
+		}
+	}
 	
 }
 
 void Level2Scene::Render() {
 	ls::renderBg(Engine::GetWindow(), Sprite2);
+
 	ls::render(Engine::GetWindow());
+
+	ls::renderBg(Engine::GetWindow(), healthSprite2);
 
 	Scene::Render();
 }

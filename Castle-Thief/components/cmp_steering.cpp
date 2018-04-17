@@ -3,20 +3,28 @@
 
 using namespace sf;
 float fleeing;
+bool fled = false;
 
 void SteeringComponent::update(double dt) {
-	//if target player within 400px seek
+	
 	fleeing -= dt;
-	if (length(_parent->getPosition() - _player->getPosition()) < 400.0f && fleeing > 0.f) {
+
+	if (_parent->getHp() == 1 && !fled)
+	{
+		fleeing = 10.f;
+		fled = true;
+	}
+	//if target player within 400px seek
+	if (length(_parent->getPosition() - _player->getPosition()) < 400.0f && fleeing < 0.f) {
 		auto output = _seek.getAiMove();
 		move(output.direction * (float)dt);
 	}
 	//if hp == 1 flee for 5 seconds
-	else if (_parent->getHp() == 1) {
+	else if (_parent->getHp() == 1 && fleeing > 0.f) {
 		auto output = _flee.getAiMove();
 		move(output.direction * (float)dt);
 	}
-	//If none of above wander aimlessly
+	//If none of above wander aimlessly. Does not work as well as in theory but it manages to stop the ghost from being static and instead drift around the map a bit.
 	else
 	{
 		AIMoveOut steering;
@@ -27,7 +35,6 @@ void SteeringComponent::update(double dt) {
 		steering.rotation = 0.0f;
 
 		move(steering.direction * (float)dt);
-		fleeing = 5.f;
 	}
 }
 
@@ -46,6 +53,7 @@ bool SteeringComponent::validMove(const sf::Vector2f& pos) const
 void SteeringComponent::move(const sf::Vector2f &p) {
 	auto new_pos = _parent->getPosition() + p;
 
+	//Add randomness to movement to stop the ghosts moving in a staight line, this also provides a spooky jitter affect to the sprite.
 	if(plusorminus)
 	{ 
 		new_pos.x += rand() % 2;

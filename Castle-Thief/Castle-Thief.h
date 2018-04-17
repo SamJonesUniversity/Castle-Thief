@@ -8,6 +8,7 @@
 
 extern MenuScene menu;
 extern OptionsScene option;
+extern tutorial tutorial1;
 extern Level1Scene level1;
 extern Level2Scene level2;
 extern WinScene win;

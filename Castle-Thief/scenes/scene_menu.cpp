@@ -20,13 +20,12 @@ void MenuScene::Load() {
 		
     auto txt = makeEntity();
     auto t = txt->addComponent<TextComponent>(
-        "Castle Thief\n1. Continue\n2. New game\n3. Options\n4. Exit");
+        "Castle Thief\n1. Continue\n2. New game\n3. Exit");
   }
   setLoaded(true);
 }
 
 void MenuScene::Update(const double& dt) {
-  // cout << "Menu Update "<<dt<<"\n";
 
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
 		string buffer;
@@ -56,13 +55,9 @@ void MenuScene::Update(const double& dt) {
 		}
 	}	
 	else if (sf::Keyboard::isKeyPressed(Keyboard::Num2)) {
-		Engine::ChangeScene(&level1);
+		Engine::ChangeScene(&tutorial1);
 	}
 	else if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
-		Engine::ChangeScene(&option);
-	
-	}
-	else if (sf::Keyboard::isKeyPressed(Keyboard::Num4)) {
 		exit(0);
 	}
 
